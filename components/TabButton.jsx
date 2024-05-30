@@ -2,7 +2,10 @@ import { useEffect, useRef } from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+// Tab button component
+// Author: Nguyen Cao Nhan
 export default ({ item, accessibilityState, onPress }) => {
+  // Animated values
   const animatedValues = {
     translate: useRef(new Animated.Value(0)).current,
     scale: useRef(new Animated.Value(0)).current,
@@ -14,6 +17,7 @@ export default ({ item, accessibilityState, onPress }) => {
     handleAnimated();
   }, [accessibilityState.selected]);
 
+  // Handle animation
   const handleAnimated = () => {
     Animated.parallel([
       Animated.timing(translate, {
@@ -29,6 +33,7 @@ export default ({ item, accessibilityState, onPress }) => {
     ]).start();
   };
 
+  // Styles
   const translateStyles = {
     transform: [
       {

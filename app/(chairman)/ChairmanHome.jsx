@@ -9,8 +9,12 @@ import EmployeeCreate from './BottomTabBar/EmployeeCreate';
 import SignUpRequest from './BottomTabBar/SignUpRequest';
 import SignUpDetail from './BottomTabBar/SignUpDetail';
 
+// Stack navigation for Chairman
+// Author: Pham Hien Nhan
 const Stack = createNativeStackNavigator();
 
+// Sign-up request stack page directions
+// Author: Pham Hien Nhan
 const SignUpStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="SignUpRequest" component={SignUpRequest} options={{ headerShown: false }} />
@@ -18,6 +22,8 @@ const SignUpStack = () => (
   </Stack.Navigator>
 );
 
+// Employee stack page directions
+// Author: Pham Hien Nhan
 const EmployeeStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }} />
@@ -26,6 +32,8 @@ const EmployeeStack = () => (
   </Stack.Navigator>
 );
 
+// Chairman home page
+// Author: Pham Hien Nhan
 const ChairmanHome = () => {
   const Tab = createBottomTabNavigator()
   const tabs = [
@@ -45,12 +53,7 @@ const ChairmanHome = () => {
     }]
 
   return (
-    <Tab.Navigator
-      initialRouteName={'Employee'}
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: styles.tabBar
-      }}>
+    <Tab.Navigator initialRouteName={'Employee'} screenOptions={{ headerShown: false, tabBarStyle: styles.tabBar }}>
       {tabs.map((item, index) =>
         <Tab.Screen
           key={item.id}
@@ -64,6 +67,8 @@ const ChairmanHome = () => {
   )
 }
 
+// Styles for chairman home page
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
   tabBar: {
     height: 70,

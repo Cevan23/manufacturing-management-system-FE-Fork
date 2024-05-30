@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EditProfilePage from '../Profile/EditProfilePage';
 import ResetPassword from '../Profile/ResetPassword';
 
+// ProfileStack component for direct among pages
+// Author: Pham Hien Nhan
 const Stack = createNativeStackNavigator();
 
 const ProfileStack = () => {

@@ -1,16 +1,14 @@
 import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import {
-	getAllBOMs,
-	getBOMlikeName,
-	getBOMsByStatus,
-} from "../../services/BOMServices";
+import { getAllBOMs, getBOMsByStatus } from "../../services/BOMServices";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { Card } from "react-native-paper";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { CustomButton, AppLoader, ToastMessage } from "../../components";
+import { CustomButton } from "../../components";
 
+// Bill of Materials page 
+// Author: Pham Van Cao
 const PMBOM = () => {
 	const [loading, setLoading] = useState(true);
 	const successToastRef = useRef(null);
@@ -26,6 +24,8 @@ const PMBOM = () => {
 		{ label: "Finish", value: "FINISH" },
 	]);
 
+	// Filter searched data by BOM name
+	// Author: Pham Hien Nhan
 	const getFilteredData = () => {
 		if (searchText.trim() === "") {
 			return boms;
@@ -37,10 +37,14 @@ const PMBOM = () => {
 
 	const filteredData = getFilteredData();
 
+	// Refetch data when focus
+	// Author: Pham Van Cao
 	useFocusEffect(
 		React.useCallback(() => {
 			setLoading(true);
 			const fetchData = async () => {
+				// Get all BOMs
+				// Author: Pham Van Cao
 				const data = await getAllBOMs(token);
 				setBoms(data.result);
 				setLoading(false);
@@ -49,6 +53,8 @@ const PMBOM = () => {
 		}, [token])
 	);
 
+	// Navigate to CreateBOM page
+	// Author: Pham Van Cao
 	const handleInsert = () => {
 		try {
 			navigation.navigate("CreateBOM");
@@ -57,6 +63,8 @@ const PMBOM = () => {
 		}
 	};
 
+	// Navigate to BOMDetail page
+	// Author: Pham Van Cao
 	const handleCardPress = async (id) => {
 		console.log(`Card with id ${id} was pressed.`);
 		try {
@@ -120,6 +128,8 @@ const PMBOM = () => {
   );
 };
 
+// Styles of PMBOM page
+// Author: Pham Van Cao
 const styles = StyleSheet.create({
 	dropDownContainer: {
 		height: 40,

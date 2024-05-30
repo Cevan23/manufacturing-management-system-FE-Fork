@@ -5,13 +5,11 @@ import { styles } from "./stylesSignUp";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ToastMessage, AppLoader } from "../../../components";
 import { useGlobalContext } from "../../../context/GlobalProvider";
-import {
-  getSignUpRequest,
-  acceptSignUpRequest,
-  deleteUser,
-} from "../../../services/UserServices";
+import { getSignUpRequest, acceptSignUpRequest, deleteUser } from "../../../services/UserServices";
 import RNPickerSelect from "react-native-picker-select";
 
+// SignUpRequest page
+// Author: Pham Hien Nhan
 const SignUpRequest = () => {
   const { userLogin, searchText, setSearchText } = useGlobalContext();
   const navigation = useNavigation();
@@ -21,9 +19,13 @@ const SignUpRequest = () => {
   const [selectedOption, setSelectedOption] = useState({});
   const [loading, setLoading] = useState(false);
 
+  // Sign-up request Fetch Data reload
+  // Author: Pham Hien Nhan
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
+      // Get all sign-up request from database
+      // Author: Pham Hien Nhan
       const data = await getSignUpRequest(userLogin.id);
       if (data && data.data) {
         setDataResponse(data.data);
@@ -41,10 +43,14 @@ const SignUpRequest = () => {
     }, [fetchData])
   );
 
+  // Navigate to SignUpDetail page
+  // Author: Pham Hien Nhan
   const handleCardPress = (item) => {
     navigation.navigate("SignUpDetail", { data: item });
   };
 
+  // Handle option role change for accepting sign-up request
+  // Author: Pham Hien Nhan
   const handleOptionChange = (index, option) => {
     setSelectedOption((prev) => ({
       ...prev,
@@ -52,6 +58,8 @@ const SignUpRequest = () => {
     }));
   };
 
+  // Remove cards from the list
+  // Author: Pham Hien Nhan
   const removeCard = (index) => {
     console.log("This card order: ", index);
     setDataResponse((prevData) => {
@@ -68,8 +76,12 @@ const SignUpRequest = () => {
     });
   };
 
+  // Handle deny sign-up request
+  // Author: Pham Hien Nhan
   const handleDeny = async (index) => {
     try {
+      // Handle delete sign-up request from database
+      // Author: Pham Hien Nhan
       await deleteUser(dataResponse[index].id);
       if (successToastRef.current) {
         successToastRef.current.show({
@@ -92,6 +104,8 @@ const SignUpRequest = () => {
     }
   };
 
+  // Accept sign-up request
+  // Author: Pham Hien Nhan
   const handleAccept = async (index, option) => {
     if (!option) {
       if (errorToastRef.current) {
@@ -104,6 +118,8 @@ const SignUpRequest = () => {
       return;
     }
     try {
+      // Handle accept sign-up request from database
+      // Author: Pham Hien Nhan
       await acceptSignUpRequest(dataResponse[index].email, option);
       if (successToastRef.current) {
         successToastRef.current.show({
@@ -130,6 +146,8 @@ const SignUpRequest = () => {
     }
   };
 
+  // Filter searched data by name
+  // Author: Pham Hien Nhan
   const getFilteredData = () => {
     if (searchText.trim() === "") {
       return dataResponse;

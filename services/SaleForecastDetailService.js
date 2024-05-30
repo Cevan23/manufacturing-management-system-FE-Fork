@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Nguyen Cao Nhan
+// Function to get sale forecast detail by ID
 export const getSaleForecastDetail = async (token, sale_forecast_id) => {
     const config = {
         headers: {
@@ -14,10 +16,11 @@ export const getSaleForecastDetail = async (token, sale_forecast_id) => {
     }
 };
 
+// Function to add sale forecast detail
 export const addSaleForecastDetail = async (token, sid, pids, quantities) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         }
     };
     const data = {
@@ -33,10 +36,11 @@ export const addSaleForecastDetail = async (token, sid, pids, quantities) => {
     }
 };
 
+// Function to delete sale forecast detail
 export const deleteSaleForecastDetail = async (token, pid, sid) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
         params: {
             pid: pid,
@@ -50,10 +54,11 @@ export const deleteSaleForecastDetail = async (token, pid, sid) => {
     }
 };
 
+// Function to update sale forecast detail
 export const updateSaleForecastDetail = async (token, sid, pid, quantity, totalPrice, totalSalePrice) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
     };
     const data = {
@@ -72,7 +77,7 @@ export const updateSaleForecastDetail = async (token, sid, pid, quantity, totalP
     }
 };
 
-
+// Function to get products associated with a sale forecast
 export const getProductsForSaleForecast = async (token, sale_forecast_id) => {
     const config = {
         headers: {

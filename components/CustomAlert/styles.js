@@ -4,6 +4,8 @@ const images ={
     logo: require('../../assets/images/logo.png'),
 };
 
+// Styles of the CustomAlert component
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,

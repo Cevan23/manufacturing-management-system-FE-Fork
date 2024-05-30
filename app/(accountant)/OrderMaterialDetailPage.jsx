@@ -1,12 +1,5 @@
-import {
-	Text,
-	View,
-	StyleSheet,
-	Alert,
-	TextInput,
-	ScrollView,
-} from "react-native";
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import { Text, View, StyleSheet, TextInput } from "react-native";
+import React, { useState, useRef, useCallback } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { Swipeable } from "react-native-gesture-handler";
@@ -17,18 +10,13 @@ import {
 	addOrderMaterialDetail,
 	updateOrderMaterialDetail,
 } from "../../services/OrderMaterialService";
-import {
-	CustomButton,
-	AppLoader,
-	ToastMessage,
-	AlertWithTwoOptions,
-	LeftSwipe,
-	ODModal,
-} from "../../components";
+import { CustomButton, AppLoader, ToastMessage, AlertWithTwoOptions, LeftSwipe, ODModal } from "../../components";
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Card } from "react-native-paper";
 
+// Order material detail page component
+// Author: Nguyen Cao Nhan
 const OrderMaterialDetail = ({ route }) => {
 	const { order } = route.params;
 	const { token, userLogin } = useGlobalContext();
@@ -36,8 +24,7 @@ const OrderMaterialDetail = ({ route }) => {
 	const [loading, setLoading] = useState(true);
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
-	const [confirmationModalVisible, setConfirmationModalVisible] =
-		useState(false);
+	const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
 	const [odModalVisible, setodModalVisible] = useState(false);
 	const [id, setId] = useState(false);
 	const [dataMaterials, setDataMaterials] = useState([]);
@@ -46,10 +33,13 @@ const OrderMaterialDetail = ({ route }) => {
 		quantity: 0,
 	});
 
+	// Fetch data of order material detail
 	const fetchData = useCallback(async () => {
 		setLoading(true);
 		try {
+			// Get order material detail
 			const res = await getOrderMaterialDetail(token, order.id);
+			// Get material for order material
 			const resp = await getMaterialForOrderMaterial(token, order.id);
 			setData(res.result);
 			setDataMaterials(resp.result);
@@ -82,6 +72,7 @@ const OrderMaterialDetail = ({ route }) => {
 		setodModalVisible(true);
 	};
 
+	// Handle swipe item press
 	const handleSwipeItemPress = (title, item) => {
 		if (title === "Delete") {
 			setConfirmationModalVisible(true);
@@ -91,6 +82,7 @@ const OrderMaterialDetail = ({ route }) => {
 		}
 	};
 
+	// Handle edit press
 	const handleEditPress = (item) => {
 		setFormUpdate({
 			quantity: item.quantity,
@@ -99,6 +91,7 @@ const OrderMaterialDetail = ({ route }) => {
 		setId(item.material_id);
 	};
 
+	// Handle quantity change
 	const handleQuantityChange = (id, quantity) => {
 		setSelectedProducts((prevState) => {
 			console.log("***"); // Log trạng thái trước đó
@@ -118,6 +111,7 @@ const OrderMaterialDetail = ({ route }) => {
 		});
 	};
 
+	// Handle product select
 	const handleProductSelect = (id) => {
 		setSelectedProducts((prevState) => {
 			console.log("###"); // Log trạng thái trước đó
@@ -135,6 +129,7 @@ const OrderMaterialDetail = ({ route }) => {
 		});
 	};
 
+	// Create order material detail
 	async function createOrderMaterialDetail() {
 		try {
 			setLoading(true);
@@ -151,6 +146,8 @@ const OrderMaterialDetail = ({ route }) => {
 				pids.push(item.id);
 				quantities.push(item.quantity);
 			});
+
+			// Add order material detail
 			const add_res = await addOrderMaterialDetail(
 				token,
 				order.id,
@@ -189,9 +186,11 @@ const OrderMaterialDetail = ({ route }) => {
 		}
 	}
 
+	// Delete order material detail
 	async function delOrderMaterialDetail(id) {
 		try {
 			setLoading(true);
+			// Delete order material detail by id
 			const del_res = await deleteOrderMaterialDetail(token, order.id, id);
 			if (!del_res) {
 				throw new Error("Fail to delete!");
@@ -218,10 +217,11 @@ const OrderMaterialDetail = ({ route }) => {
 		}
 	}
 
+	// Update order material detail
 	async function upOrderMaterialDetail(quantity) {
 		try {
 			setLoading(true);
-
+			// Update order material detail
 			const up_res = await updateOrderMaterialDetail(
 				token,
 				order.id,
@@ -254,6 +254,7 @@ const OrderMaterialDetail = ({ route }) => {
 			setLoading(false);
 		}
 	}
+	
 	return (
 		<SafeAreaView style={styles.backgroundColor}>
 			<View style={{ paddingLeft: 10 }}>

@@ -1,20 +1,22 @@
 import React, { useState, useRef } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from "react-native";
-import { creatWorkOrder } from "../../services/WorkOrderServices";
-import { createWorkOrderDetail, sumProjectedProductionByMPS } from "../../services/WorkOrderDetailServices";
-import { getAllMPS } from "../../services/MPSServices";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
+import { creatWorkOrder } from "../../../services/WorkOrderServices";
+import { createWorkOrderDetail, sumProjectedProductionByMPS } from "../../../services/WorkOrderDetailServices";
+import { getAllMPS } from "../../../services/MPSServices";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import { useGlobalContext } from "../../../context/GlobalProvider";
 import { Card, Title } from "react-native-paper";
-import IconButton from "../../components/IconButton";
+import IconButton from "../../../components/IconButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { icons } from "../../constants";
-import AppLoader from "../AppLoader";
-import ToastMessage from "../ToastMessage";
-import CustomButton from "../CustomButton";
-import FormField from "../FormField";
-import CustomAlert from "../CustomAlert";
-import { Picker } from "@react-native-picker/picker";
+import { icons } from "../../../constants";
+import AppLoader from "../../../components/AppLoader";
+import ToastMessage from "../../../components/ToastMessage";
+import CustomButton from ".../../../components/CustomButton";
+import FormField from "../../../components/FormField";
+import CustomAlert from "../../../components/CustomAlert";
+
+// Create Work Order page for Product Manager
+// Author: Pham Van Cao
 const CreateWorkOrder = () => {
 	const [loading, setLoading] = useState(true);
 	const successToastRef = useRef(null);
@@ -59,10 +61,14 @@ const CreateWorkOrder = () => {
   	const [alertMessage1, setAlertMessage1] = useState("");
   	const [alertMessage2, setAlertMessage2] = useState("");
 
+	// Fetch all MPS data
+	// Author: Pham Van Cao
 	useFocusEffect(
 		React.useCallback(() => {
 			const fetchData = async () => {
 				setLoading(true);
+				// Fetch all MPS data
+				// Author: Pham Van Cao
 				const mpsData = await getAllMPS(token);
 				setMPS(mpsData.result);
 				setLoading(false);
@@ -72,55 +78,57 @@ const CreateWorkOrder = () => {
 		}, [token, userId])
 	);
 
+	// Handle close modal
+	// Author: Pham Hien Nhan
 	const handleClose = () => {
 		setModalVisible(false); 
 	  };
 
 	const handleSave = async () => {
 		console.log('mps', mps);
-		// try {
-		// 	setLoading(true);
-		// 	const WO = await creatWorkOrder(token, workOrder);
-		// 	if (WO && WO.result) {
-		// 		const WOID = WO.result;
-		// 		console.log("WOID: ", WOID);
-		// 		const newWorkOrderDetails = workOrderDetails.map((detail) => ({
-		// 			...detail,
-		// 			workOrderId: WOID,
-		// 		}));
+		try {
+			setLoading(true);
+			const WO = await creatWorkOrder(token, workOrder);
+			if (WO && WO.result) {
+				const WOID = WO.result;
+				console.log("WOID: ", WOID);
+				const newWorkOrderDetails = workOrderDetails.map((detail) => ({
+					...detail,
+					workOrderId: WOID,
+				}));
 
-		// 		setWorkOrderDetails(newWorkOrderDetails);
-		// 		console.log(newWorkOrderDetails);
-		// 		const WODetail = await createWorkOrderDetail(
-		// 			token,
-		// 			newWorkOrderDetails
-		// 		);
-		// 		console.log(WODetail);
-		// 		if (successToastRef.current) {
-		// 			successToastRef.current.show({
-		// 				type: "success",
-		// 				text: "Success",
-		// 				description: "MPS created successfully!",
-		// 			});
-		// 		}
-		// 		const timer = setTimeout(() => {
-		// 			navigation.navigate("WorkOrderHome");
-		// 		}, 4000);
-		// 	} else {
-		// 		if (errorToastRef.current) {
-		// 			errorToastRef.current.show({
-		// 				type: "danger",
-		// 				text: "Error",
-		// 				description:
-		// 					"API call failed, WO or WO.result is null or undefined!",
-		// 			});
-		// 		}
-		// 	}
-		// } catch (error) {
-		// 	console.error(error);
-		// } finally {
-		// 	setLoading(false);
-		// }
+				setWorkOrderDetails(newWorkOrderDetails);
+				console.log(newWorkOrderDetails);
+				const WODetail = await createWorkOrderDetail(
+					token,
+					newWorkOrderDetails
+				);
+				console.log(WODetail);
+				if (successToastRef.current) {
+					successToastRef.current.show({
+						type: "success",
+						text: "Success",
+						description: "MPS created successfully!",
+					});
+				}
+				const timer = setTimeout(() => {
+					navigation.navigate("WorkOrderHome");
+				}, 4000);
+			} else {
+				if (errorToastRef.current) {
+					errorToastRef.current.show({
+						type: "danger",
+						text: "Error",
+						description:
+							"API call failed, WO or WO.result is null or undefined!",
+					});
+				}
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (

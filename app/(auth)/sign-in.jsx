@@ -1,16 +1,16 @@
-import { useState,useContext} from "react";
+import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
+import { View, Text, ScrollView, Dimensions , Image } from "react-native";
 import { images } from "../../constants";
 import { CustomButton, FormField } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { login,getUserInformationById } from "../../services/LoginServices";
-import { AuthContext } from "../../store/AuthContext";
+import { login,getUserInformationById } from "../../services/LoginServices"; 
 import { decodeJwtMiddleware } from '../../middleware/decode';
 import CustomAlert from "../../components/CustomAlert";
 
-
+// Sign-in screen
+// Author: Pham Hien Nhan
 const SignIn = () => {
   const { setUser, setIsLogged, setUserLogin, setToken, setUserId, setPasswordLogin } = useGlobalContext();
   const [isSubmitting, setSubmitting] = useState(false);
@@ -22,16 +22,20 @@ const SignIn = () => {
   const [alertMessage1, setAlertMessage1] = useState("");
   const [alertMessage2, setAlertMessage2] = useState("");
 
-  const authCtx = useContext(AuthContext);
-
+  // Handle change email 
+  // Author: Pham Hien Nhan
   function handleChangeEmail(email) {
     setEmail(email);
   }
 
+  // Handle change password
+  // Author: Pham Hien Nhan
   function handleChangePassword(password) {
     setPassword(password);
   }
 
+  // Handle check login
+  // Author: Pham Hien Nhan
   async function handleLogin() {
     if (email === "" || password === "") {
       setModalVisible(true);
@@ -44,7 +48,9 @@ const SignIn = () => {
     setPasswordLogin(password);
 
     try {
-      const loginResponse = await login(email, password); // Corrected line
+      // Check login 
+      // Author: Pham Van Cao
+      const loginResponse = await login(email, password); 
       if (!loginResponse) {
         setModalVisible(true);
         setErrorMessage("Password or email is incorrect");
@@ -59,15 +65,21 @@ const SignIn = () => {
       const authObj = loginResponse.result;
       const token = authObj.token;
       setToken(token);
-
+      
+      // Get user information by id 
+      // Author: Pham Van Cao
       const userLogin = await getUserInformationById(authObj.token, authObj.id);
       setUser(userLogin);
       setIsLogged(true);
 
-      // Giải mã token
+      // Token decryption
+      // Author: Pham Van Cao
       const decodedToken = await decodeJwtMiddleware(authObj.token);
       setUserId(decodedToken.userId);
       console.log("Decoded Token: ", decodedToken.userId); 
+
+      // Redirect to home page based on role
+      // Author: Nguyen Cao Nhan
       if (decodedToken.role === 'PRODUCT_MANAGER') {
         setSubmitting(false);
         setUserLogin(userLogin.result);
@@ -97,12 +109,14 @@ const SignIn = () => {
   }
 
   // Function to try again sign in
+  // Author: Pham Hien Nhan
   const handleTryAgain = () => {
     handleLogin();
     setModalVisible(false); 
   };
 
   // Function to clear email and password fields
+  // Author: Pham Hien Nhan
   const handClear = () => {
     setEmail("");
     setPassword("");

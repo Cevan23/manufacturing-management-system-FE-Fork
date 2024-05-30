@@ -23,6 +23,8 @@ const ResetPassword = () => {
   const successToastRef = useRef(null);
   const errorToastRef = useRef(null);
 
+  // Handle check valid password
+  // Author: Pham Hien Nhan
   const submit = async () => {
     if (currentPassword === "" || newPassword === "") {
       setModalVisible(true);
@@ -49,6 +51,8 @@ const ResetPassword = () => {
     }
   };
 
+  // Handle allow reset password
+  // Author: Pham Hien Nhan
   async function handleResetPassword() {
     const updatedPassword = await resetPassword(
       userLogin.id,
@@ -130,13 +134,9 @@ const ResetPassword = () => {
         </View>
       </ScrollView>
 
-      <ToastMessage
-        type={"success"}
-        ref={successToastRef}></ToastMessage>
+      <ToastMessage type={"success"} ref={successToastRef}></ToastMessage>
     
-      <ToastMessage
-        type="danger"
-        ref={errorToastRef}/>
+      <ToastMessage type="danger" ref={errorToastRef}/>
 
       <CustomAlert
         modalVisible={modalVisible}

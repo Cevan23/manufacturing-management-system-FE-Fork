@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Nguyen Cao Nhan
+// Function to get all sale forecasts
 export const getAllSaleForecast = async (token) => {
     const config = {
         headers: {
@@ -14,10 +16,11 @@ export const getAllSaleForecast = async (token) => {
     }
 };
 
+// Function to add a new sale forecast
 export const addSaleForecast = async (token, accountant_id) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
         params: {
             ac_id: accountant_id,
@@ -31,10 +34,11 @@ export const addSaleForecast = async (token, accountant_id) => {
     }
 };
 
+// Function to delete a sale forecast
 export const deleteSaleForecast = async (token, id) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
     };
     try {
@@ -45,10 +49,11 @@ export const deleteSaleForecast = async (token, id) => {
     }
 };
 
+// Function to update a sale forecast
 export const updateSaleForecast = async (token, id, dateStart, dateEnd) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
     };
     const data = {

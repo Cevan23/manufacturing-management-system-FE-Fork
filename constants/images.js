@@ -8,4 +8,5 @@ import empty from "../assets/images/empty.png";
 import forgotPassword from "../assets/images/forgot-password.png";
 import accountant from "../assets/images/accountant.png";
 import load from "../assets/images/loading.json";
+
 export default { profile, thumbnail, forgotPassword, cards, path, logo, logoSmall, empty, accountant, load };

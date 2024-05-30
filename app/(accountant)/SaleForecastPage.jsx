@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Alert, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import React, { useState, useRef, useCallback } from "react";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { useGlobalContext } from "../../context/GlobalProvider";
@@ -10,18 +10,13 @@ import {
 	deleteSaleForecast,
 	updateSaleForecast,
 } from "../../services/SaleForecastService";
-import {
-	CustomButton,
-	AppLoader,
-	ToastMessage,
-	AlertWithTwoOptions,
-	SFModal,
-	LeftSwipe,
-} from "../../components";
+import { CustomButton, AppLoader, ToastMessage, AlertWithTwoOptions, SFModal, LeftSwipe } from "../../components";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Card } from "react-native-paper";
 import dateUtilsInstance from "../../utils/DateUtils";
 
+// Sale Forecast Page
+// Author: Nguyen Cao Nhan
 const SaleForecast = () => {
 	const { token, userLogin } = useGlobalContext();
 	const [data, setData] = useState([]);
@@ -29,17 +24,18 @@ const SaleForecast = () => {
 	const [error, setError] = useState(null);
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
-	const [confirmationModalVisible, setConfirmationModalVisible] =
-		useState(false);
+	const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
 	const [sfModalVisible, setsfModalVisible] = useState(false);
 	const [id, setId] = useState(false);
 	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(new Date());
 	const navigation = useNavigation();
 
+	// Fetch data for sale forecast
 	const fetchData = useCallback(async () => {
 		setLoading(true);
 		try {
+			// Get all sale forecast
 			const res = await getAllSaleForecast(token);
 			setData(res.result);
 		} catch (err) {
@@ -55,10 +51,12 @@ const SaleForecast = () => {
 		}, [fetchData])
 	);
 
+	// Navigate to Sale Forecast Detail Page
 	const handleNavigate = (id) => {
 		navigation.navigate("SaleForecastDetailPage", { itemId: id });
 	};
 
+	// Handle swipe item press
 	const handleSwipeItemPress = (title, item) => {
 		if (title === "Delete") {
 			setConfirmationModalVisible(true);
@@ -68,6 +66,7 @@ const SaleForecast = () => {
 		}
 	};
 
+	// Handle edit press
 	const handleEditPress = (item) => {
 		setsfModalVisible(true);
 		setId(item.id);
@@ -79,9 +78,11 @@ const SaleForecast = () => {
 		}
 	};
 
+	// Create sale forecast
 	async function createSaleForecast() {
 		try {
 			setLoading(true);
+			// Add sale forecast into database
 			const add_res = await addSaleForecast(token, parseInt(userLogin.id));
 			if (!add_res) {
 				if (errorToastRef.current) {
@@ -108,9 +109,11 @@ const SaleForecast = () => {
 		}
 	}
 
+	// Delete sale forecast
 	async function delSaleForecast(id) {
 		try {
 			setLoading(true);
+			// Delete sale forecast from database
 			const del_res = await deleteSaleForecast(token, id);
 			if (!del_res) {
 				if (errorToastRef.current) {
@@ -137,9 +140,11 @@ const SaleForecast = () => {
 		}
 	}
 
+	// Update sale forecast
 	async function upSaleForecast(dateStart, dateEnd) {
 		try {
 			setLoading(true);
+			// Update sale forecast in database
 			const up_res = await updateSaleForecast(token, id, dateStart, dateEnd);
 			if (!up_res) {
 				if (errorToastRef.current) {
@@ -165,6 +170,7 @@ const SaleForecast = () => {
 			setLoading(false);
 		}
 	}
+	
 	return (
 		<>
 			<SafeAreaView style={styles.backgroundColor}>

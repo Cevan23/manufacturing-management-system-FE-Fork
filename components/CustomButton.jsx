@@ -1,6 +1,8 @@
 import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+// Custom button for handles press event
+// Author: Pham Hien Nhan
 const CustomButton = ({
   title,
   handlePress,

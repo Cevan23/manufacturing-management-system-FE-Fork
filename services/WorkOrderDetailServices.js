@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Pham Van Cao
+// Creates a new work order detail
 export const createWorkOrderDetail = async (token, req) => {
     try {
         const config = {
@@ -12,6 +14,7 @@ export const createWorkOrderDetail = async (token, req) => {
     }
 }
 
+// Updates an existing work order detail
 export const updateWorkOrderDetail = async (token, req) => {
     try {
         const config = {
@@ -24,6 +27,7 @@ export const updateWorkOrderDetail = async (token, req) => {
     }
 }
 
+// Plus projected production by MPS
 export const sumProjectedProductionByMPS = async (token, idmps) => {
     try {
         const config = {

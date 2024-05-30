@@ -1,11 +1,4 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { Text, View, StyleSheet, Modal, TouchableOpacity, TextInput } from "react-native";
 import { useState, useCallback } from "react";
 import {
   createInventory,
@@ -14,9 +7,11 @@ import {
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { useFocusEffect } from "@react-navigation/native";
 import { CustomButton, AppLoader } from "../../components";
-import { FlatList, Swipeable } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import { Card } from "react-native-paper";
 
+// Inventory Page
+// Author: Pham Hien Nhan
 const Inventory = () => {
   const [inventories, setInventories] = useState([]);
   const { token } = useGlobalContext();
@@ -27,9 +22,12 @@ const Inventory = () => {
     address: "",
     maxVolume: "",
   });
+
+  // Fetch data for inventory
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
+      // Get all inventories
       const res = await getAllInventories(token);
       setInventories(res.result);
     } catch (err) {
@@ -45,10 +43,12 @@ const Inventory = () => {
     }, [fetchData])
   );
 
+  // Handle form change
   const handleFormChange = (name, value) => {
     setForm({ ...form, [name]: value });
   };
 
+  // Handle form submit
   const handleFormSubmit = async () => {
     try {
       const newInventory = {
@@ -78,13 +78,8 @@ const Inventory = () => {
               data={inventories.slice().sort((a, b) => a.id - b.id)}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                // <Swipeable
-                //   renderLeftActions={leftSwipe}
-                //   renderRightActions={rightSwipe}
-                // >
                 <Card
                   style={styles.card}
-                  //   onPress={() => handleNavigate(item.id)}
                 >
                   <Card.Title
                     title={"Inventory .No: " + item.id}
@@ -102,7 +97,6 @@ const Inventory = () => {
                     </Text>
                   </Card.Content>
                 </Card>
-                // </Swipeable>
               )}
             />
 

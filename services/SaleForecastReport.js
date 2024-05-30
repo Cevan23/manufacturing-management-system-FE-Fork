@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Nguyen Cao Nhan
+// Function to get sales forecast report for a specific month
 export const getReportMonth = async (token, month, year) => {
     const config = {
         headers: {
@@ -14,6 +16,7 @@ export const getReportMonth = async (token, month, year) => {
     }
 };
 
+// Function to get sales forecast report for a specific year
 export const getReportYear = async (token, year) => {
     const config = {
         headers: {

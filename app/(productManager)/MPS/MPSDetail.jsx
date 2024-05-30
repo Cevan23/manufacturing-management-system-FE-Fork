@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getMPSByID, updateMPS, deleteMPS } from '../../services/MPSServices';
-import { useGlobalContext } from '../../context/GlobalProvider';
-import IconButton from '../../components/IconButton';
+import { getMPSByID, updateMPS, deleteMPS } from '../../../services/MPSServices';
+import { useGlobalContext } from '../../../context/GlobalProvider';
+import IconButton from '../../../components/IconButton';
 import { Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { FormField, ToastMessage } from "../../components";
-import CustomAlert from "../../components/CustomAlert";
-import AlertWithTwoOptions from "../../components/AlertWithTwoOptions";
+import { FormField, ToastMessage } from "../../../components";
+import CustomAlert from "../../../components/CustomAlert";
+import AlertWithTwoOptions from "../../../components/AlertWithTwoOptions";
 
+// Master Production Schedule Detail page
+// Author: Pham Van Cao
 const ProductionScheduleDetail = ({ route }) => {
     const { id } = route.params;
     const { token } = useGlobalContext();
@@ -22,9 +24,13 @@ const ProductionScheduleDetail = ({ route }) => {
     const [alertMessage1, setAlertMessage1] = useState("");
     const [alertMessage2, setAlertMessage2] = useState("");
 
+    // Fetch MPS by ID
+    // Author: Pham Van Cao
     useEffect(() => {
         const fetchData = async () => {
             console.log("id: ", id);
+            // Get MPS by ID
+            // Author: Pham Van Cao
             const response = await getMPSByID(token, id); // replace token with actual token
             console.log("response: ", response);
             setMPSDetail(response.result);
@@ -32,9 +38,13 @@ const ProductionScheduleDetail = ({ route }) => {
         fetchData();
     }, []);
 
+    // Save MPS update
+    // Author: Pham Van Cao
     const handleSave = async () => {
         try {
             console.log("mpsDetail: ", mpsDetail);
+            // Update MPS
+            // Author: Pham Van Cao
             const response = await updateMPS(token, mpsDetail);
             console.log("response: ", response);
             if (successToastRef.current) {
@@ -59,8 +69,12 @@ const ProductionScheduleDetail = ({ route }) => {
         }
     };
 
+    // Delete MPS
+    // Author: Pham Van Cao
     const handleDelete = async () => {
         try {
+            // Delete MPS by ID in the database
+            // Author: Pham Van Cao
             const response = await deleteMPS(token, id);
             console.log("response: ", response);
             if (successToastRef.current) {
@@ -85,6 +99,8 @@ const ProductionScheduleDetail = ({ route }) => {
         }
     };
 
+    // Handle start date change
+    // Author: Pham Hien Nhan
     const handleStartDateChange = (selectedDate) => {
         if (selectedDate <= mpsDetail.dateEnd) {
             setMPSDetail(prevState => ({ ...prevState, dateStart: selectedDate }));
@@ -96,6 +112,8 @@ const ProductionScheduleDetail = ({ route }) => {
         }
     };
 
+    // Handle end date change
+    // Author: Pham Hien Nhan
     const handleEndDateChange = (selectedDate) => {
         if (selectedDate >= mpsDetail.dateStart) {
             setMPSDetail(prevState => ({ ...prevState, dateEnd: selectedDate }));
@@ -107,6 +125,8 @@ const ProductionScheduleDetail = ({ route }) => {
         }
     };
 
+    // Handle close alert box
+    // Author: Pham Hien Nhan
     const handCloseAlertBox = () => {
         setModalVisible(false); 
     };

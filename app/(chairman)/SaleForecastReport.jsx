@@ -1,36 +1,15 @@
-import {
-	Text,
-	View,
-	Dimensions,
-	TextInput,
-	StyleSheet,
-	SafeAreaView,
-} from "react-native";
-import React, { useState, useCallback } from "react";
+import { Text, View, Dimensions, TextInput, StyleSheet, SafeAreaView } from "react-native";
+import React, { useState } from "react";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import {
-	getReportMonth,
-	getReportYear,
-} from "../../services/SaleForecastReport";
-import {
-	CustomButton,
-	AppLoader,
-	ToastMessage,
-	AlertWithTwoOptions,
-} from "../../components";
-import { useFocusEffect } from "@react-navigation/native";
-import {
-	LineChart,
-	BarChart,
-	PieChart,
-	ProgressChart,
-	ContributionGraph,
-	StackedBarChart,
-} from "react-native-chart-kit";
+import { getReportMonth, getReportYear } from "../../services/SaleForecastReport";
+import { CustomButton, AppLoader } from "../../components";
+import { LineChart } from "react-native-chart-kit";
 import { ScrollView } from "react-native-gesture-handler";
 
+// Sale forecast report page
+// Author: Nguyen Cao Nhan
 const SaleForecastReport = () => {
-	const { token, userLogin } = useGlobalContext();
+	const { token } = useGlobalContext();
 	const [year, setYear] = useState(""); // State to store the year input
 	const [dataMonth1, setDataMonth1] = useState([]);
 	const [dataMonth3, setDataMonth3] = useState([]);
@@ -46,9 +25,13 @@ const SaleForecastReport = () => {
 
 	const [loading, setLoading] = useState(false);
 
+	// Fetch data from the server
+	// Author: Nguyen Cao Nhan
 	async function fetchData(token, year) {
 		setLoading(true);
 		try {
+			// Get data for each month (12 months) relying on the year input
+			// Author: Nguyen Cao Nhan
 			const res1 = await getReportMonth(token, 1, year);
 			setDataMonth1(res1.result);
 
@@ -67,6 +50,8 @@ const SaleForecastReport = () => {
 			const res12 = await getReportMonth(token, 12, year);
 			setDataMonth12(res12.result);
 
+			// Get data for each year (5 years) relying on the year input (last years)
+			// Author: Nguyen Cao Nhan
 			const res_1 = await getReportYear(token, year - 4);
 			setDataYear1(res_1.result);
 
@@ -277,6 +262,9 @@ const SaleForecastReport = () => {
 		</SafeAreaView>
 	);
 };
+
+// Styles for sale forecast report page
+// Author: Nguyen Cao Nhan
 const styles = StyleSheet.create({
 	backgroundColor: {
 		backgroundColor: "#161622",

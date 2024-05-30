@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Pham Van Cao
+// Function to fetch all BOMs
 export const getAllBOMs = async (token) => {
     try {
         const config = {
@@ -12,21 +14,20 @@ export const getAllBOMs = async (token) => {
     }
 };
 
+// Function to fetch BOMs by name
 export const getBOMlikeName = async (token, name) => {
-    console.log("name: ", name);
-    console.log("token 2 : ", token);
     try {
         const config = {
             headers: { Authorization: `Bearer ${token}` },
         };
         const res = await http.get(`/api/BOMs/getBOMsByLikeName?nameRequest=${encodeURIComponent(name)}`, config);
-        console.log("res: ", res);
         return res;
     } catch (e) {
         console.log("Error at BOM Service: ", e);
     }
 };
 
+// Function to fetch BOMs by status
 export const getBOMsByStatus = async (token, status) => {
     try {
         const config = {
@@ -39,6 +40,7 @@ export const getBOMsByStatus = async (token, status) => {
     }
 };
 
+// Function to fetch BOM detail by ID
 export const getBOMDetail = async (token, id) => {
     try {
         const config = {
@@ -51,6 +53,7 @@ export const getBOMDetail = async (token, id) => {
     }
 };
 
+// Function to delete a BOM by ID
 export const deleteBOM = async (token, bomID) => {
     try {
         const config = {
@@ -63,6 +66,7 @@ export const deleteBOM = async (token, bomID) => {
     }
 }
 
+// Function to update a BOM by ID
 export const updateBOM = async (token, bomID, data) => {
     try {
         const config = {
@@ -75,6 +79,7 @@ export const updateBOM = async (token, bomID, data) => {
     }
 }
 
+// Function to create a new BOM
 export const createBOM = async (token, data) => {
     try {
         const config = {

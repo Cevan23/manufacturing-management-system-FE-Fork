@@ -1,13 +1,17 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 
+// Author: Nguyen Cao Nhan
 const AlertWithTwoOptions = ({ visible, onYesPress, onNoPress }) => {
+  // Function to handle the "No" button press
   const handleNoPress = () => {
+    // If there's an "onNoPress" function passed as a prop, call it
     if (onNoPress) {
       onNoPress();
     }
   };
 
+  // Modal component to display the alert
   return (
     <Modal
       animationType="fade"

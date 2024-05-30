@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Nguyen Cao Nhan
+// Function to get order product detail by ID
 export const getOrderProductDetail = async (token, order_id) => {
     const config = {
         headers: {
@@ -14,10 +16,11 @@ export const getOrderProductDetail = async (token, order_id) => {
     }
 };
 
+// Function to add order product detail
 export const addOrderProductDetail = async (token, oid, pids, quantities) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         }
     };
     const data = {
@@ -33,18 +36,17 @@ export const addOrderProductDetail = async (token, oid, pids, quantities) => {
     }
 };
 
-export const deleteOtherProductDetail = async (token, oid, pid) => {
+// Function to delete order product detail
+export const deleteOrderProductDetail = async (token, oid, pid) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
         params: {
             pid: pid,
         },
     };
     try {
-        console.log("order_id: ", oid);
-        console.log("product_id: ", pid);
         const res = await http.del(`/api/order_product_detail/${oid}`, config);
         return res;
     } catch (e) {
@@ -52,10 +54,11 @@ export const deleteOtherProductDetail = async (token, oid, pid) => {
     }
 };
 
+// Function to update order product detail
 export const updateOrderProductDetail = async (token, oid, pid, quantity) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
     };
     const data = {
@@ -72,7 +75,7 @@ export const updateOrderProductDetail = async (token, oid, pid, quantity) => {
     }
 };
 
-
+// Function to get products associated with an order product
 export const getProductsForOrderProduct = async (token, oid) => {
     const config = {
         headers: {

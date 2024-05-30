@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 
+// Sale forecast detail modal component
+// Author: Nguyen Cao Nhan
 const SFDModal = ({ initialQuantity, initialTotalPrice, initialTotalSalePrice, visible, onSavePress, onClose }) => {
   const [quantity, setQuantity] = useState(initialQuantity.toString());
   const [totalPrice, setTotalPrice] = useState(initialTotalPrice.toString());
@@ -49,6 +51,8 @@ const SFDModal = ({ initialQuantity, initialTotalPrice, initialTotalSalePrice, v
   );
 };
 
+// Styles of sale forecast detail modal component
+// Author: Nguyen Cao Nhan
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,

@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TextInput, StyleSheet, FlatList, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import IconButton from "../../components/IconButton";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import IconButton from "../../../components/IconButton";
+import { useGlobalContext } from "../../../context/GlobalProvider";
 import { Picker } from "@react-native-picker/picker";
 import { Card, Title, Paragraph, List, DataTable } from "react-native-paper";
 import BOMDetail from "./BOMDetail";
-import { createBOM } from "../../services/BOMServices";
-import FormField from "../FormField";
-import AppLoader from "../AppLoader";
-import ToastMessage from "../ToastMessage";
+import { createBOM } from "../../../services/BOMServices";
+import FormField from "../../../components/FormField";
+import AppLoader from "../../../components/AppLoader";
+import ToastMessage from "../../../components/ToastMessage";
 
+// Create BOM page
+// Author: Pham Van Cao
 function CreateBOM({ route }) {
 	const navigation = useNavigation();
 	const { token, userId } = useGlobalContext();
@@ -35,10 +37,13 @@ function CreateBOM({ route }) {
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
 
+	// Set the default unit to "g" when the component mounts
 	useEffect(() => {
 		setNewMaterialUnit("g");
 	}, []);
 
+	// Create the request body for the createBOM API
+	// Author: Pham Van Cao
 	const createRequestBody = (bomDetail) => {
 		const requestBody = {
 			productManagerId: userId,
@@ -64,6 +69,8 @@ function CreateBOM({ route }) {
 		return requestBody;
 	};
 
+	// Handle deleting a material from the BOM
+	// Author: Pham Van Cao
 	const handleDeleteMaterial = (index) => {
 		Alert.alert(
 			"Delete Material",
@@ -85,16 +92,25 @@ function CreateBOM({ route }) {
 		);
 	};
 
+	// Handle input change for the BOM details
+	// Author: Pham Van Cao
 	const handleInputChange = (name, value) => {
 		setBomDetail((prevState) => ({ ...prevState, [name]: value }));
 		console.log("BOMUpdate: ", BOMDetail);
 	};
 
+	// Handle saving the BOM
+	// Author: Pham Van Cao
 	const handleSave = async () => {
 		try {
 			setLoading(true);
+			// Create the request body
+			// Author: Pham Van Cao
 			const requestBody = createRequestBody(bomDetail);
 			console.log("requestBody:", requestBody);
+
+			// Create the new BOM
+			// Author: Pham Van Cao
 			const res = await createBOM(token, requestBody);
 			if (res.result === null) {
 				if (successToastRef.current) {
@@ -122,6 +138,8 @@ function CreateBOM({ route }) {
 		setTempDeletedMaterials([]);
 	};
 
+	// Handle adding a new material to the BOM
+	// Author: Pham Van Cao
 	const handleAddMaterial = () => {
 		console.log("newMaterialName:", newMaterialName);
 		console.log("newMaterialPrice:", newMaterialPrice);

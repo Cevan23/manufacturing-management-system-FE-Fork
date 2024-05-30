@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
 import DD from "../DD";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {
-	View,
-	Text,
-	Modal,
-	TouchableOpacity,
-	TextInput,
-	StyleSheet,
-	Platform,
-} from "react-native";
+import { View, Text, Modal, TouchableOpacity, TextInput, StyleSheet, Platform } from "react-native";
 
 const dropdownItems = [
 	{ label: "PO", value: "PO" },
 	{ label: "SO", value: "SO" },
 ];
 
+// Order creation modal component
+// Author: Nguyen Cao Nhan
 const OCModal = ({
 	initialName,
 	initialContact,
@@ -39,12 +33,14 @@ const OCModal = ({
 		}
 	}, [visible, initialName, initialContact, initialKindOrder]);
 
+	// Handle end date selection
 	const handleEndDateSelect = (event, selectedDate) => {
 		const currentDate = selectedDate || dateEnd;
 		setShowEndDatePicker(Platform.OS === "ios");
 		setDateEnd(currentDate);
 	};
 
+	// Handle save button press
 	const handleSave = () => {
 		onSavePress(dateEnd.toISOString(), name, contact, kindOrder);
 	};
@@ -111,6 +107,7 @@ const OCModal = ({
 	);
 };
 
+// Styles of order creation modal component
 const styles = StyleSheet.create({
 	modalContainer: {
 		flex: 1,

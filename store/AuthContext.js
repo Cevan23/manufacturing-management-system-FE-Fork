@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useState, useEffect } from "react";
 
+// Create an AuthContext with default values
+// Author: Pham Van Cao
 export const AuthContext = createContext({
     token: "",
     isAuthenticated: false,
@@ -8,14 +10,16 @@ export const AuthContext = createContext({
     logout: () => { },
 });
 
+// AuthContextProvider component to provide authentication state and functions
 const AuthContextProvider = ({ children }) => {
     const [token, setToken] = useState("");
 
+    // useEffect to retrieve token from AsyncStorage when the component mounts
     useEffect(() => {
         async function getToken() {
             try {
                 const storedToken = await AsyncStorage.getItem("token");
-                console.log("Token retrieved: ", storedToken); // Add this line
+                console.log("Token retrieved: ", storedToken); // Log retrieved token
                 if (storedToken) {
                     setToken(storedToken);
                 }
@@ -27,6 +31,7 @@ const AuthContextProvider = ({ children }) => {
         getToken();
     }, []);
 
+    // Function to authenticate and store the token
     async function authenticate(token) {
         setToken(token);
         try {
@@ -37,6 +42,7 @@ const AuthContextProvider = ({ children }) => {
         }
     }
 
+    // Function to logout and remove the token
     async function logout() {
         setToken("");
         try {
@@ -46,6 +52,7 @@ const AuthContextProvider = ({ children }) => {
         }
     }
 
+    // Value object to be provided by AuthContext
     const value = {
         token: token,
         isAuthenticated: !!token,
@@ -53,6 +60,7 @@ const AuthContextProvider = ({ children }) => {
         authenticate,
     };
 
+    // Provide AuthContext to children components
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

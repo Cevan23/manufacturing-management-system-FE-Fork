@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabButton } from "../../components";
@@ -6,6 +6,8 @@ import InventoryMaterial from "./InventoryMaterial";
 import InventoryProduct from "./InventoryProduct";
 import Inventory from "./Inventory";
 
+// Tab for navigation among inventory Pages
+// Author: Pham Hien Nhan
 const InventoryPages = () => {
   const Tab = createBottomTabNavigator();
   const tabs = [

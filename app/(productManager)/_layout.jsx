@@ -1,105 +1,85 @@
 import "react-native-gesture-handler";
-import {
-	Text,
-	View,
-	Image,
-	TouchableOpacity,
-	TextInput,
-	StyleSheet,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import React, { useContext, useState } from "react";
-import {
-	SimpleLineIcons,
-	MaterialIcons,
-	MaterialCommunityIcons,
-	FontAwesome,
-} from "@expo/vector-icons";
+import { SimpleLineIcons, MaterialIcons, MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import { images } from "../../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-	DrawerItemList,
-	createDrawerNavigator,
-} from "@react-navigation/drawer";
+import { DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/stack";
+
 import ProfilePage from "./Profile/ProfilePage";
 import ProductManagerHome from "./ProductManagerHome";
+import ProductManagerHomeDetail from "./ProductManagerHomeDetail";
 import ProductionSchedule from "./ProductionSchedule";
+import ProductionScheduleDetail from "./MPS/MPSDetail";
+import MPSCreateForm from "./MPS/MPSCreateForm";
 import WorkOrder from "./WorkOrder";
+import WorkOrderDetail from "./WO/WorkOrderDetail";
+import CreateWorkOrder from "./WO/CreateWO";
 import PMBOM from "./PMBOM";
+import BOMDetail from "./BOM/BOMDetail";
+import CreateBOM from "./BOM/CreateBOM";
 import SignIn from "../(auth)/sign-in";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { AuthContext } from "../../store/AuthContext";
-import BOMDetail from "../../components/BOM/BOMDetail";
-import CreateBOM from "../../components/BOM/CreateBOM";
-import { createStackNavigator } from "@react-navigation/stack";
-import ProductionScheduleDetail from "../../components/MPS/MPSDetail";
-import MPSCreateForm from "../../components/MPS/MPSCreateForm";
-import CreateWorkOrder from "../../components/WorkOrder/CreateWO";
-import WorkOrderDetail from "../../components/WorkOrder/WorkOrderDetail";
-import ProductManagerHomeDetail from "./ProductManagerHomeDetail";
 
+// Drawer navigation for Product Manager
+// Author: Pham Van Cao
+const Drawer = createDrawerNavigator();
+
+// Stack navigation for Product Manager
+// Author: Pham Van Cao
 const Stack = createStackNavigator();
 
-const PMBOMStack = () => (
-	<Stack.Navigator
-		initialRouteName="PMBOM"
-		screenOptions={{ headerShown: false }}
-	>
-		<Stack.Screen name="PMBOM" component={PMBOM} />
-		<Stack.Screen name="BOMDetail" component={BOMDetail} />
-		<Stack.Screen name="CreateBOM" component={CreateBOM} />
+// Home stack page directions
+// Author: Pham Van Cao
+const ProductManagerStack = () => (
+	<Stack.Navigator initialRouteName="ProductManager" screenOptions={{ headerShown: false }} >
+		<Stack.Screen name="ProductManager" component={ProductManagerHome} />
+		<Stack.Screen name="ProductManagerHomeDetail" component={ProductManagerHomeDetail}/>
 	</Stack.Navigator>
 );
 
+// Production Schedule stack page directions
+// Author: Pham Van Cao
 const MPSStack = () => (
-	<Stack.Navigator
-		initialRouteName="ProductionSchedule"
-		screenOptions={{ headerShown: false }}
-	>
-		<Stack.Screen
-			name="ProductionScheduleHome"
-			component={ProductionSchedule}
-		/>
-		<Stack.Screen
-			name="ProductionScheduleDetail"
-			component={ProductionScheduleDetail}
-		/>
+	<Stack.Navigator initialRouteName="ProductionSchedule" screenOptions={{ headerShown: false }} >
+		<Stack.Screen name="ProductionScheduleHome" component={ProductionSchedule} />
+		<Stack.Screen name="ProductionScheduleDetail" component={ProductionScheduleDetail} />
 		<Stack.Screen name="MPSCreateForm" component={MPSCreateForm} />
 	</Stack.Navigator>
 );
 
+// Work Order of PM stack page directions
+// Author: Pham Van Cao
 const WorkOrderStack = () => (
-	<Stack.Navigator
-		initialRouteName="WorkOrder"
-		screenOptions={{ headerShown: false }}
-	>
+	<Stack.Navigator initialRouteName="WorkOrder" screenOptions={{ headerShown: false }} >
 		<Stack.Screen name="WorkOrderHome" component={WorkOrder} />
 		<Stack.Screen name="CreateWorkOrder" component={CreateWorkOrder} />
 		<Stack.Screen name="WorkOrderDetail" component={WorkOrderDetail} />
 	</Stack.Navigator>
 );
 
-const ProductManagerStack = () => (
-	<Stack.Navigator
-		initialRouteName="ProductManager"
-		screenOptions={{ headerShown: false }}
-	>
-		<Stack.Screen name="ProductManager" component={ProductManagerHome} />
-		<Stack.Screen
-			name="ProductManagerHomeDetail"
-			component={ProductManagerHomeDetail}
-		/>
+// Bill of materials stack page directions
+// Author: Pham Van Cao
+const PMBOMStack = () => (
+	<Stack.Navigator initialRouteName="PMBOM" screenOptions={{ headerShown: false }}>
+		<Stack.Screen name="PMBOM" component={PMBOM} />
+		<Stack.Screen name="BOMDetail" component={BOMDetail} />
+		<Stack.Screen name="CreateBOM" component={CreateBOM} />
 	</Stack.Navigator>
 );
 
-const Drawer = createDrawerNavigator();
-
+// Product Manager layout
+// Author: Pham Van Cao
 const ProductManagerLayout = () => {
-	const { setUser, setIsLogged, userLogin, searchText, setSearchText } =
-		useGlobalContext();
+	const { setUser, setIsLogged, userLogin, searchText, setSearchText } = useGlobalContext();
 	const authCtx = useContext(AuthContext);
 
 	const [searchMode, setSearchMode] = useState(false);
 
+	// Handle logout
+	// Author: Nguyen Cao Nhan
 	const handleLogout = () => {
 		// Clear user data and token
 		setUser(null);
@@ -107,11 +87,15 @@ const ProductManagerLayout = () => {
 		authCtx.logout();
 	};
 
+	// Handle cancel search
+	// Author: Pham Hien Nhan
 	const handleCancelSearch = () => {
 		setSearchMode(false);
 		setSearchText("");
 	};
 
+	// Handle open search box
+	// Author: Pham Hien Nhan
 	const handleSearchIconClick = () => {
 		setSearchMode(!searchMode);
 		if (!searchMode) {
@@ -291,6 +275,8 @@ const ProductManagerLayout = () => {
 	);
 };
 
+// Handle styles for Product Manager layout
+// Author: Pham Van Cao
 const styles = StyleSheet.create({
 	searchContainer: {
 		flexDirection: "row",

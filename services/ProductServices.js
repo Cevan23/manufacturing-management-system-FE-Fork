@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Pham Van Cao
+// Function to get all products
 export const getAllProduct = async (token) => {
     try {
         const config = {

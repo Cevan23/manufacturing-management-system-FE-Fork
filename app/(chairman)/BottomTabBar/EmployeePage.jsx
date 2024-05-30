@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { styles } from './stylesEmployee';
@@ -7,6 +7,8 @@ import { CustomButton, ToastMessage, AppLoader } from '../../../components';
 import { useGlobalContext } from '../../../context/GlobalProvider';
 import { getAllEmployee, deleteUser } from '../../../services/UserServices';
 
+// Employee page
+// Author: Pham Hien Nhan
 const Employee = () => {
   const { userLogin, searchText, setSearchText } = useGlobalContext();
   const navigation = useNavigation();
@@ -15,9 +17,13 @@ const Employee = () => {
   const errorToastRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
+  // Employee Fetch Data reload
+  // Author: Pham Hien Nhan
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
+      // Get all employees
+      // Author: Pham Hien Nhan
       const data = await getAllEmployee(userLogin.id);
       if (data && data.data) {
         setDataResponse(data.data);
@@ -35,20 +41,30 @@ const Employee = () => {
     }, [fetchData])
   );
 
+  // Navigate to EmployeeDetail page
+  // Author: Pham Hien Nhan
   const navigateEmployeeDetail = (item) => {
     navigation.navigate('EmployeeDetail', { data: item });
   };
 
+  // Navigate to EmployeeCreate page
+  // Author: Pham Hien Nhan
   const navigateEmployeeCreate = () => {
     navigation.navigate('EmployeeCreate');
   };
 
+  // Remove card view from the list
+  // Author: Pham Hien Nhan
   const removeCard = (index) => {
     setDataResponse((prevData) => prevData.filter((_, i) => i !== index));
   };
 
+  // Handle delete user from database
+  // Author: Pham Hien Nhan
   const handleDelete = async (index) => {
     try {
+      // Delete user base on clicked index
+      // Author: Pham Hien Nhan
       await deleteUser(dataResponse[index].id);
       if (successToastRef.current) {
         successToastRef.current.show({
@@ -69,6 +85,8 @@ const Employee = () => {
     }
   };
 
+  // Filter searched data by name
+  // Author: Pham Hien Nhan
   const getFilteredData = () => {
     if (searchText.trim() === '') {
       return dataResponse;

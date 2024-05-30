@@ -1,6 +1,8 @@
 import { View, TouchableOpacity, Text } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 
+// SwipeItem component
+// Author: Pham Hien Nhan
 export const SwipeItem = ({ color, icon, title, onPress }) => {
 	return (
 		<View

@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Nguyen Cao Nhan
+// Function to get all orders
 export const getAllOrder = async (token) => {
     const config = {
         headers: {
@@ -14,10 +16,11 @@ export const getAllOrder = async (token) => {
     }
 };
 
+// Function to add a new order
 export const addOrder = async (token, accountants_id, name, contact, dateEnd, kindOrder) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
     };
     const data = {
@@ -35,10 +38,11 @@ export const addOrder = async (token, accountants_id, name, contact, dateEnd, ki
     }
 };
 
+// Function to delete an order
 export const deleteOrder = async (token, id) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
     };
     try {
@@ -49,15 +53,13 @@ export const deleteOrder = async (token, id) => {
     }
 };
 
+// Function to update an existing order
 export const updateOrder = async (token, id, dateStart, dateEnd, orderStatus) => {
     const config = {
         headers: {
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
         },
     };
-    console.log("dateStart: ", dateStart);
-    console.log("dateEnd: ", dateEnd);
-    console.log("orderStatus: ", orderStatus);
     const data = {
         id,
         dateStart,

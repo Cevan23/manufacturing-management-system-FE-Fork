@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
+// Drop down field component
+// Author: Pham Hien Nhan
 const DropDownField = ({
 	title,
 	value,

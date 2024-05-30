@@ -1,37 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	TouchableOpacity,
-	TextInput,
-	Image,
-} from "react-native";
-import {
-	deleteWorkOrder,
-	getWorkOrderDetail,
-	updateWorkOrder,
-} from "../../services/WorkOrderServices";
-import {
-	updateWorkOrderDetail,
-	createWorkOrderDetail,
-} from "../../services/WorkOrderDetailServices";
-import { getAllMPS } from "../../services/MPSServices";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from "react-native";
+import { deleteWorkOrder, getWorkOrderDetail, updateWorkOrder } from "../../../services/WorkOrderServices";
+import { createWorkOrderDetail } from "../../../services/WorkOrderDetailServices";
+import { getAllMPS } from "../../../services/MPSServices";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import { useGlobalContext } from "../../../context/GlobalProvider";
 import { Card } from "react-native-paper";
-import IconButton from "../../components/IconButton";
-import DropDownPicker from "react-native-dropdown-picker";
+import IconButton from "../../../components/IconButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { icons } from "../../constants";
-import AppLoader from "../AppLoader";
-import AlertWithTwoOptions from "../AlertWithTwoOptions";
-import ToastMessage from "../ToastMessage";
-import CustomButton from "../CustomButton";
-import { set } from "date-fns";
+import { icons } from "../../../constants";
+import AppLoader from "../../../components/AppLoader";
+import AlertWithTwoOptions from "../../../components/AlertWithTwoOptions";
+import ToastMessage from "../../../components/ToastMessage";
+import CustomButton from "../../../components/CustomButton";
+import { Picker } from "@react-native-picker/picker";
 
-const WorkOrderAC = ({ route }) => {
+// Work Order Detail page
+// Author: Pham Van Cao
+const WorkOrderDetail = ({ route }) => {
 	const { token, userId } = useGlobalContext();
 	const navigation = useNavigation();
 	const { id } = route.params;
@@ -46,26 +32,36 @@ const WorkOrderAC = ({ route }) => {
 	const [items, setItems] = useState([
 		{ label: "Pending", value: "pending" },
 		{ label: "Processing", value: "processing" },
-		{ label: "Finish", value: "ACcheck" },
+		{ label: "Finish", value: "PMcheck" },
 	]);
-	const [confirmationModalVisible, setConfirmationModalVisible] =
-		useState(false);
-
+	const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState(workOrder.workOrderStatus);
+	const initialLabel = items.find(
+		(item) => item.value === workOrder.workOrderStatus
+	)?.label;
 
+	const [selectedValue, setSelectedValue] = useState(initialLabel);
+
+	// Set the value of the Picker when the workOrderStatus changes
 	useEffect(() => {
 		setValue(workOrder.workOrderStatus);
 	}, [workOrder.workOrderStatus]);
 
+	// Set the value of the Picker when the workOrderStatus changes
+	// Author: Pham Van Cao
 	useFocusEffect(
 		React.useCallback(() => {
 			const fetchData = async () => {
 				setLoading(true);
+				// Get the work order details
+				// Author: Pham Van Cao
 				const response = await getWorkOrderDetail(token, id);
 				setWorkOrder(response.result.workOrder);
 				setWorkOrderDetails(response.result.workOrderDetails);
 
+				// Get all MPS
+				// Author: Pham Van Cao
 				const mpsResponse = await getAllMPS(token);
 				setMPS(mpsResponse.result);
 				setLoading(false);
@@ -74,12 +70,17 @@ const WorkOrderAC = ({ route }) => {
 		}, [token, userId])
 	);
 
+	// Save the work order
+	// Author: Pham Van Cao
 	const handleSave = async () => {
 		try {
 			setLoading(true);
 			console.log("workOrder: ", workOrder);
 			console.log("workOrderDetails: ", workOrderDetails);
+			// Update the work order
 			const response = await updateWorkOrder(token, workOrder);
+
+			// Create the work order details
 			const responseDT = await createWorkOrderDetail(token, workOrderDetails);
 			console.log("response: ", response);
 			console.log("responseDT: ", responseDT);
@@ -91,8 +92,8 @@ const WorkOrderAC = ({ route }) => {
 				});
 			}
 			setTimeout(() => {
-                navigation.goBack();
-            }, 3500);
+				navigation.navigate("WorkOrderHome");
+			}, 3500);
 		} catch (error) {
 			console.error(error);
 			if (errorToastRef.current) {
@@ -107,9 +108,13 @@ const WorkOrderAC = ({ route }) => {
 		}
 	};
 
+	// Delete the work order
+	// Author: Pham Van Cao
 	const handleDelete = async () => {
 		try {
 			setLoading(true);
+			// Delete the work order
+			// Author: Pham Van Cao
 			const response = await deleteWorkOrder(token, id);
 			console.log("response: ", response);
 			if (successToastRef.current) {
@@ -120,8 +125,8 @@ const WorkOrderAC = ({ route }) => {
 				});
 			}
 			setTimeout(() => {
-                navigation.goBack();
-            }, 3500);
+				navigation.navigate("WorkOrderHome");
+			}, 3500);
 		} catch (error) {
 			if (errorToastRef.current) {
 				errorToastRef.current.show({
@@ -160,6 +165,10 @@ const WorkOrderAC = ({ route }) => {
 							style={styles.itemContainer}
 							onPress={() => {
 								setWorkOrderDetails((prevDetails) => {
+									if (prevDetails.length === 0) {
+										// If there are no details yet, just return the previous state
+										return prevDetails;
+									}
 									const newDetails = [...prevDetails];
 									newDetails[newDetails.length - 1].masterProductionScheduleId =
 										item.mpsID;
@@ -186,34 +195,30 @@ const WorkOrderAC = ({ route }) => {
 				</ScrollView>
 			</View>
 
-			<View style={{ marginBottom: 230, backgroundColor: "#161622" }}>
+			<View style={{ marginBottom: 240, backgroundColor: "#161622" }}>
 				<ScrollView>
 					<Card style={styles.card}>
 						<View style={{ flexDirection: "row", alignItems: "center" }}>
 							<Text className="flex font-psemibold text-black mr-4">
 								Work Order Status:
 							</Text>
-							<DropDownPicker
-								open={open}
-								value={value}
-								items={items}
-								setOpen={setOpen}
-								setValue={setValue}
-								setItems={setItems}
-								containerStyle={[styles.dropDownContainer, open && { zIndex: 1000 }]}
-        						style={styles.dropDown}
-        						itemStyle={{ justifyContent: 'flex-start' }}
-        						dropDownStyle={styles.dropDown}
-								onChangeValue={(value) => {
-									console.log("onChangeValue called with:", value);
-									setWorkOrder((prevState) => ({
-										...prevState,
-										workOrderStatus: value,
-									}));
+							<Picker
+								selectedValue={selectedValue}
+								onValueChange={(itemValue) => {
+									console.log("onChangeValue called with:", itemValue);
+									setSelectedValue(itemValue);
 								}}
-							/>
+								style={{ flex: 1 }}
+							>
+								{items.map((item, index) => (
+									<Picker.Item
+										key={index}
+										label={item.label}
+										value={item.label}
+									/>
+								))}
+							</Picker>
 						</View>
-
 						{showStartPicker && (
 							<DateTimePicker
 								value={
@@ -317,6 +322,7 @@ const WorkOrderAC = ({ route }) => {
 										onChangeText={(text) => {
 											const newDetails = [...workOrderDetails];
 											newDetails[index].actualProduction = Number(text);
+											newDetails[index].actualProductionPrice = Number(text) * detail.productPrice;
 											setWorkOrderDetails(newDetails);
 										}}
 									/>
@@ -328,11 +334,8 @@ const WorkOrderAC = ({ route }) => {
 									<TextInput
 										style={{ fontSize: 14 }}
 										value={String(detail.actualProductionPrice)}
-										onChangeText={(text) => {
-											const newDetails = [...workOrderDetails];
-											newDetails[index].actualProductionPrice = Number(text);
-											setWorkOrderDetails(newDetails);
-										}}
+										editable={false}
+			
 									/>
 								</View>
 								<View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -342,11 +345,8 @@ const WorkOrderAC = ({ route }) => {
 									<TextInput
 										style={{ fontSize: 14 }}
 										value={String(detail.faultyProductPrice)}
-										onChangeText={(text) => {
-											const newDetails = [...workOrderDetails];
-											newDetails[index].faultyProductPrice = Number(text);
-											setWorkOrderDetails(newDetails);
-										}}
+										editable={false}
+										
 									/>
 								</View>
 								<View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -359,6 +359,7 @@ const WorkOrderAC = ({ route }) => {
 										onChangeText={(text) => {
 											const newDetails = [...workOrderDetails];
 											newDetails[index].faultyProducts = Number(text);
+											newDetails[index].faultyProductPrice = Number(text) * detail.productPrice;
 											setWorkOrderDetails(newDetails);
 										}}
 									/>
@@ -372,8 +373,7 @@ const WorkOrderAC = ({ route }) => {
 										value={String(detail.masterProductionScheduleId)}
 										onChangeText={(text) => {
 											const newDetails = [...workOrderDetails];
-											newDetails[index].masterProductionScheduleId =
-												Number(text);
+											newDetails[index].masterProductionScheduleId = detail.faultyProducts * detail.productPrice;	
 											setWorkOrderDetails(newDetails);
 										}}
 									/>
@@ -418,11 +418,11 @@ const WorkOrderAC = ({ route }) => {
 			</View>
 
 			<CustomButton
-              	icon={"plus"}
-            	iconSize={28}
-              	containerStyles="p-0 absolute bottom-28 self-end right-4 h-12 w-12 rounded-full bg-green-500 items-center justify-center"
-              	isLoading={false}
-              	handlePress={() =>
+				icon={"plus"}
+				iconSize={28}
+				containerStyles="p-0 absolute bottom-28 self-end right-10 h-12 w-12 rounded-full bg-green-500 items-center justify-center"
+				isLoading={false}
+				handlePress={() =>
 					setWorkOrderDetails((prevState) => [
 						...prevState,
 						{
@@ -434,12 +434,13 @@ const WorkOrderAC = ({ route }) => {
 							faultyProducts: 0,
 							actualProductionPrice: 0,
 							faultyProductPrice: 0,
-						},])}
-            />
+						},
+					])}
+			/>
 
 			<View style={styles.buttonContainer}>
 				<IconButton
-					onPress={() => navigation.navigate("WorkOrderPage")}
+					onPress={() => navigation.navigate("WorkOrderHome")}
 					iconName="arrow-left"
 				/>
 				<IconButton
@@ -466,14 +467,6 @@ const WorkOrderAC = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-	dropDownContainer: {
-		height: 45, 
-		width: "45%",
-		zIndex: 2000,
-	},
-	dropDown: {
-		backgroundColor: "#FFA500",
-	},
 	buttonContainer: {
 		flexDirection: "row",
 		justifyContent: "space-between",
@@ -526,4 +519,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default WorkOrderAC;
+export default WorkOrderDetail;

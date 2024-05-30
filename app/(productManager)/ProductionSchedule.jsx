@@ -6,11 +6,15 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { CustomButton } from '../../components';
 
+// Production Schedule page
+// Author: Pham Van Cao
 const ProductionSchedule = () => {
   const { token, userId, searchText  } = useGlobalContext();
   const [mpsData, setMpsData] = useState([]);
   const navigation = useNavigation();
 
+  // Filter searched data by Production Schedule name
+	// Author: Pham Hien Nhan
   const getFilteredData = () => {
     if (searchText.trim() === '') {
       return mpsData;
@@ -22,6 +26,8 @@ const ProductionSchedule = () => {
 
   const filteredData = getFilteredData();
 
+  // Refetch data when focus
+	// Author: Pham Van Cao
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {
@@ -35,6 +41,8 @@ const ProductionSchedule = () => {
     }, [])
   );
 
+  // Navigate to Production Schedule Detail page
+  // Author: Pham Van Cao
   const handleCardPress = async (id) => {
     console.log(`Card with id ${id} was pressed.`);
     try {
@@ -44,6 +52,8 @@ const ProductionSchedule = () => {
     }
   };
 
+  // Navigate to Create MPS page
+  // Author: Pham Van Cao
   const handleInsert = async () => {
     try {
       navigation.navigate('MPSCreateForm');
@@ -87,6 +97,8 @@ const ProductionSchedule = () => {
   )
 }
 
+// Styles for Production Schedule page
+// Author: Pham Van Cao
 const styles = StyleSheet.create({
   card: {
     margin: 10,

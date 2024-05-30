@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { images } from '../../../constants';
-import Icon from 'react-native-vector-icons/Ionicons'; // Make sure you have react-native-vector-icons installed
+import Icon from 'react-native-vector-icons/Ionicons'; 
 
+// SignUpDetail page
+// Author: Pham Hien Nhan
 const SignUpDetail = ({ route }) => {
   const navigation = useNavigation();
   const { data } = route.params;
@@ -59,6 +61,8 @@ const SignUpDetail = ({ route }) => {
   );
 };
 
+// Styles of SignUpDetail page
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Pham Van Cao
+// Creates a new work order
 export const creatWorkOrder = async (token, req) => {
     try {
         const config = {
@@ -12,6 +14,7 @@ export const creatWorkOrder = async (token, req) => {
     }
 }
 
+// Updates an existing work order
 export const updateWorkOrder = async (token, req) => {
     try {
         const config = {
@@ -24,6 +27,7 @@ export const updateWorkOrder = async (token, req) => {
     }
 }
 
+// Deletes a work order by ID
 export const deleteWorkOrder = async (token, workOrderID) => {
     try {
         const config = {
@@ -36,6 +40,7 @@ export const deleteWorkOrder = async (token, workOrderID) => {
     }
 }
 
+// Retrieves all work orders
 export const getAllWorkOrders = async (token) => {
     try {
         const config = {
@@ -48,6 +53,7 @@ export const getAllWorkOrders = async (token) => {
     }
 }
 
+// Retrieves all work orders of a specific PM
 export const getAllWorkOrdersOfPM = async (token, pmID) => {
     try {
         const config = {
@@ -61,6 +67,7 @@ export const getAllWorkOrdersOfPM = async (token, pmID) => {
     }
 }
 
+// Retrieves a work order details of a specific PM
 export const getWorkOrderDetail = async (token, workOrderID) => {
     try {
         const config = {
@@ -74,6 +81,7 @@ export const getWorkOrderDetail = async (token, workOrderID) => {
     }
 }
 
+// Retrieves all work orders starting today
 export const getWorkOrderToday = async (token) => {
     try {
         const config = {

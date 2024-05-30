@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, Image, Modal, Dimensions, Touc
 import DatePicker from 'react-native-modern-datepicker';
 import { icons } from '../constants';
 
+// Form input field components
+// Author: Pham Hien Nhan
 const FormField = ({
   title,
   value,
@@ -16,11 +18,13 @@ const FormField = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
 
+  // Format the date string to the correct format
   const formatDateString = (dateString) => {
     const [year, month, day] = dateString.split('/');
     return `${year}-${month}-${day}`;
   };
 
+  // Handle the date change
   const handleDateChange = (selectedDate) => {
     setShowCalendar(false);
     const formattedDate = formatDateString(selectedDate);
@@ -30,6 +34,7 @@ const FormField = ({
     else{handleChangeText(formattedDate);} 
   };
 
+  // Handle the modal close
   const handleModalClose = () => {
     setShowCalendar(false);
   };
@@ -110,6 +115,7 @@ const FormField = ({
           </TouchableOpacity>
         )}
 
+        {/* Show calendar dialog */}
         {showCalendar && (
           <Modal
             transparent={true}

@@ -1,13 +1,5 @@
 import React, { useState, useCallback } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-  Modal,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, FlatList, Modal, TextInput, TouchableOpacity } from "react-native";
 import {
   deleteInventoryProduct,
   getAllInventoryProducts,
@@ -19,17 +11,13 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Swipeable } from "react-native-gesture-handler";
 import { Card } from "react-native-paper";
 import AppLoader from "../../components/AppLoader";
-import {
-  LeftSwipe,
-  RightSwipe,
-  AlertWithTwoOptions,
-  CustomButton,
-} from "../../components";
+import { LeftSwipe,  RightSwipe, AlertWithTwoOptions, CustomButton } from "../../components";
 
+// Inventory Product Page
+// Author: Pham Hien Nhan
 const InventoryProduct = () => {
   const [inventoryProducts, setInventoryProducts] = useState([]);
-  const [confirmationModalVisible, setConfirmationModalVisible] =
-    useState(false);
+  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [form, setForm] = useState({
     inventoryId: "",
@@ -44,9 +32,11 @@ const InventoryProduct = () => {
   const { token } = useGlobalContext();
   const [loading, setLoading] = useState(true);
 
+  // Fetch data for inventory products
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
+      // Get all inventory products
       const res = await getAllInventoryProducts(token);
       setInventoryProducts(res.result);
     } catch (err) {
@@ -62,6 +52,7 @@ const InventoryProduct = () => {
     }, [fetchData])
   );
 
+  // Group inventory products by inventory id
   const groupByInventoryId = (products) => {
     return products.reduce((groups, product) => {
       const inventoryId = product.id.inventoryId;
@@ -75,6 +66,7 @@ const InventoryProduct = () => {
 
   const groupedProducts = groupByInventoryId(inventoryProducts);
 
+  // Handle swipe item press
   const handleSwipeItemPress = (title, product) => {
     if (title === "Delete") {
       setSelectedProductId(product.id.productId);
@@ -85,6 +77,7 @@ const InventoryProduct = () => {
     }
   };
 
+  // Handle delete product
   const handleDeleteProduct = async () => {
     try {
       await deleteInventoryProduct(
@@ -104,10 +97,12 @@ const InventoryProduct = () => {
     }
   };
 
+  // Handle form change
   const handleFormChange = (name, value) => {
     setForm({ ...form, [name]: value });
   };
 
+  // Handle form submit
   const handleFormSubmit = async () => {
     if (isEditMode) {
       try {
@@ -117,6 +112,7 @@ const InventoryProduct = () => {
           quantity: form.quantity,
           safetyStockAmount: form.safetyStockAmount,
         };
+        // Update inventory product
         await updateInventoryProduct(token, updatedProduct);
         setInventoryProducts((prevProducts) =>
           prevProducts.map((product) =>
@@ -143,6 +139,7 @@ const InventoryProduct = () => {
           quantity: form.quantity,
           safetyStockAmount: form.safetyStockAmount,
         };
+        // Create new inventory product
         const res = await createInventoryProduct(token, newProduct);
         setInventoryProducts([...inventoryProducts, res.result]);
         setFormModalVisible(false);
@@ -158,6 +155,7 @@ const InventoryProduct = () => {
     }
   };
 
+  // Handle edit press
   const handleEditPress = (product) => {
     setSelectedProduct(product);
     setForm({
@@ -170,6 +168,7 @@ const InventoryProduct = () => {
     setFormModalVisible(true);
   };
 
+  // Render group by inventory id and populate products
   const renderGroup = ({ item: [inventoryId, products] }) => (
     <View key={inventoryId}>
       <View>

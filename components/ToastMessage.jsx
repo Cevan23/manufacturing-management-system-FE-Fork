@@ -3,6 +3,8 @@ import { View, Text } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { FontAwesome5 } from '@expo/vector-icons';
 
+// Toast message component
+// Author: Nguyen Cao Nhan
 const ToastMessage = forwardRef(({ type, timeout = 3000 }, ref) => {
 
     const [isVisible, setIsVisible] = useState(false);

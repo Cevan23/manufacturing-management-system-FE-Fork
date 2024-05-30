@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, SafeAreaView } from "react-native";
-import { getAllWorkOrders } from "../../services/WorkOrderServices";
-import { getAllMPS } from "../../services/MPSServices";
+import { getAllWorkOrders } from "../../services/WorkOrderServices"; 
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { Card } from "react-native-paper";
-import IconButton from "../../components/IconButton";
-import { CustomButton, AppLoader } from "../../components";
+import { Card } from "react-native-paper"; 
+import { AppLoader } from "../../components";
 
+// Work Order Page
+// Author: Nguyen Cao Nhan
 const WorkOrderPage = () => {
 	const { token } = useGlobalContext();
 	const navigation = useNavigation();
@@ -18,6 +18,7 @@ const WorkOrderPage = () => {
 		React.useCallback(() => {
 			const fetchData = async () => {
 				setLoading(true);
+				// Get all work orders
 				const data = await getAllWorkOrders(token);
 				setWorkOrders(data.result);
 				setLoading(false);
@@ -26,6 +27,7 @@ const WorkOrderPage = () => {
 		}, [token])
 	);
 
+	// Handle card press
 	const handleCardPress = (id) => {
 		try {
 			navigation.navigate("WorkOrderAC", { id });

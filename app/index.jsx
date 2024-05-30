@@ -6,9 +6,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../constants";
 import { CustomButton, Loader } from "../components";
 import { useGlobalContext } from "../context/GlobalProvider";
+
+// Welcome screen 
+// Author: Pham Hien Nhan
 const Welcome = () => {
   const { loading, isLogged } = useGlobalContext();
 
+  // Return welcome screen 
+  // Author: Pham Hien Nhan
   if (!loading && isLogged) return <Redirect href="/home" />;
 
   return (

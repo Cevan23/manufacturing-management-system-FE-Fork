@@ -7,6 +7,8 @@ import DropDownField from '../../../components/DropDownField';
 import { useNavigation } from '@react-navigation/native';
 import { createUser } from "../../../services/UserServices";
 
+// EmployeeCreate page
+// Author: Pham Hien Nhan
 const EmployeeCreate = () => {
   const navigation = useNavigation();
   const [edit, setEdit] = useState(false);
@@ -29,11 +31,15 @@ const EmployeeCreate = () => {
     { label: 'Product Manager', value: 'PRODUCT_MANAGER' },
   ];
 
+  // Allow user to edit the information
+  // Author: Pham Hien Nhan
   function handleEdit() {
     setEdit(!edit);
     setDisableEditing(!disableEdit); 
   }
 
+  // Create new user account
+  // Author: Pham Hien Nhan
   async function handleCreateUser() {
     if (fullName === "" || email === "" || password === "" || dateOfBirth === "" || 
       phoneNumber === "" || address === "" || roleName === "") {
@@ -51,6 +57,8 @@ const EmployeeCreate = () => {
     setSubmitting(true);
 
     try {
+      // Create new user account with default password 123456.
+      // Author: Pham Hien Nhan
       await createUser(
         fullName,
         email,
@@ -178,6 +186,8 @@ const EmployeeCreate = () => {
   );
 };
 
+// Styles of EmployeeCreate page
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
   container: {
     flex: 1,

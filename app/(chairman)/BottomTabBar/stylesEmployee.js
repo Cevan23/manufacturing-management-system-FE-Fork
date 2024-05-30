@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+// Styles of Employee pages
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
   backgroundColor: {
     backgroundColor: "#161622",

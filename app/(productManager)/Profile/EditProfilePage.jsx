@@ -25,21 +25,28 @@ const EditProfilePage = () => {
 	const [address, setAddress] = useState(userLogin.address);
 
 	// Remove time -> 'YYYY-MM-DD'
-	const dateOfBirthFormatted = new Date(dateOfBirth).toLocaleDateString(
-		"en-CA"
-	);
+  	// Author: Pham Hien Nhan
+	const dateOfBirthFormatted = new Date(dateOfBirth).toLocaleDateString("en-CA");
 
+	// Allow editing of user information
+  	// Author: Pham Hien Nhan
 	function handleEdit() {
 		setEdit(!edit);
 		setDisableEditing(!disableEdit);
 	}
 
+	// Allow navigation to ResetPassword page
+  	// Author: Pham Hien Nhan
 	const navigation = useNavigation();
 
+	// Handle reset password
+  	// Author: Pham Hien Nhan
 	const handleResetPassword = () => {
 		navigation.navigate("ResetPassword");
 	};
 
+	// Handle update user information
+  	// Author: Pham Hien Nhan
 	async function handleUpdateInfo() {
 		setSubmitting(true);
 		const updatedUser = await updateUser(

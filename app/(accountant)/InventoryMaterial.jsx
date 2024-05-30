@@ -1,13 +1,5 @@
 import React, { useState, useCallback } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-  Modal,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, FlatList, Modal, TextInput, TouchableOpacity } from "react-native";
 import {
   deleteInventoryMaterial,
   getAllInventoryMaterials,
@@ -19,17 +11,13 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Swipeable } from "react-native-gesture-handler";
 import { Card } from "react-native-paper";
 import AppLoader from "../../components/AppLoader";
-import {
-  LeftSwipe,
-  RightSwipe,
-  AlertWithTwoOptions,
-  CustomButton,
-} from "../../components";
+import { LeftSwipe, RightSwipe, AlertWithTwoOptions, CustomButton } from "../../components";
 
+// Inventory Material Page
+// Author: Pham Hien Nhan
 const InventoryMaterial = () => {
   const [InventoryMaterials, setInventoryMaterials] = useState([]);
-  const [confirmationModalVisible, setConfirmationModalVisible] =
-    useState(false);
+  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [form, setForm] = useState({
     inventoryId: "",
@@ -44,9 +32,11 @@ const InventoryMaterial = () => {
   const { token } = useGlobalContext();
   const [loading, setLoading] = useState(true);
 
+  // Fetch data for inventory materials
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
+      // Get all inventory materials
       const res = await getAllInventoryMaterials(token);
       setInventoryMaterials(res.result);
     } catch (err) {
@@ -62,6 +52,7 @@ const InventoryMaterial = () => {
     }, [fetchData])
   );
 
+  // Group inventory materials by inventory id
   const groupByInventoryId = (materials) => {
     return materials.reduce((groups, material) => {
       const inventoryId = material.id.inventoryId;
@@ -75,6 +66,7 @@ const InventoryMaterial = () => {
 
   const groupedMaterials = groupByInventoryId(InventoryMaterials);
 
+  // Handle swipe item press
   const handleSwipeItemPress = (title, material) => {
     if (title === "Delete") {
       setselectedMaterialId(material.id.materialId);
@@ -85,6 +77,7 @@ const InventoryMaterial = () => {
     }
   };
 
+  // Handle delete product material
   const handleDeleteProductMaterial = async () => {
     try {
       await deleteInventoryMaterial(
@@ -104,10 +97,12 @@ const InventoryMaterial = () => {
     }
   };
 
+  // Handle form change
   const handleFormChange = (name, value) => {
     setForm({ ...form, [name]: value });
   };
 
+  // Handle form submit
   const handleFormSubmit = async () => {
     if (isEditMode) {
       try {
@@ -158,6 +153,7 @@ const InventoryMaterial = () => {
     }
   };
 
+  // Handle edit press
   const handleEditPress = (material) => {
     setselectedMaterial(material);
     setForm({
@@ -170,6 +166,7 @@ const InventoryMaterial = () => {
     setFormModalVisible(true);
   };
 
+  // Render group of inventory materials
   const renderGroup = ({ item: [inventoryId, materials] }) => (
     <View key={inventoryId}>
       <View>

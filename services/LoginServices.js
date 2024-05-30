@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Pham Hien Nhan
+// Function to login with email and password
 export const login = async (email, password) => {
     try {
         const res = await http.post(
@@ -8,7 +10,7 @@ export const login = async (email, password) => {
                 email,
                 password,
             },
-            { withCredentials: true }
+            { withCredentials: true } // Include credentials in the request
         );
         return res;
     } catch (e) {
@@ -16,6 +18,7 @@ export const login = async (email, password) => {
     }
 };
 
+// Function to sign up or insert a new user
 export const signUpOrInsertUser = async (fullName, email, password, dateOfBirth, phoneNumber, address, roleName) => {
     try {
         const res = await http.post(
@@ -36,6 +39,7 @@ export const signUpOrInsertUser = async (fullName, email, password, dateOfBirth,
     }
 };
 
+// Function to get user information by ID
 export const getUserInformationById = async (token, id) => {
     const config = {
         headers: {
@@ -45,13 +49,15 @@ export const getUserInformationById = async (token, id) => {
     try {
         const res = await http.get(
             `/api/users/getUserInformationById/${id}`,
-            config);
+            config
+        );
         return res;
     } catch (e) {
         console.log("Error at Get user information: ", e);
     }
 };
 
+// Function to recover password by email
 export const recoverPasswordByEmail = async (email) => {
     try {
         const res = await http.put(

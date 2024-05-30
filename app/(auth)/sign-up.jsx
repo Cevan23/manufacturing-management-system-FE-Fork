@@ -8,6 +8,8 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { signUpOrInsertUser } from "../../services/LoginServices";
 import CustomAlert from "../../components/CustomAlert";
 
+// Sign-up screen
+// Author: Pham Hien Nhan
 const SignUp = () => {
   const { setUser, setIsLogged } = useGlobalContext();
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,6 +30,8 @@ const SignUp = () => {
     address: "",
   });
 
+  // Handle sign-up
+  // Author: Pham Hien Nhan
   async function handleSignUp() {
     if (form.fullName === "" || form.email === "" || form.password === ""
         || form.dateOfBirth === "" || form.phoneNumber === "" || form.address === "") {
@@ -41,6 +45,8 @@ const SignUp = () => {
     setSubmitting(true);
 
     try {
+      // Handle sign-up request check email not existed in database
+      // Author: Pham Hien Nhan
       const SignUpRequest = await signUpOrInsertUser(form.fullName, form.email, form.password, form.dateOfBirth, form.phoneNumber, form.address, "");
       if (!SignUpRequest) {
         setModalVisible(true);
@@ -69,12 +75,14 @@ const SignUp = () => {
   };
 
   // Function to try again sign in
+  // Author: Pham Hien Nhan
   const handleTryAgain = () => {
     handleSignUp();
     setModalVisible(false); 
   };
 
   // Function to clear email and password fields
+  // Author: Pham Hien Nhan
   const handClear = () => {
     setForm({ ...form, 
       fullName: "", 
@@ -182,13 +190,9 @@ const SignUp = () => {
         </View>
       </ScrollView>
 
-      <ToastMessage
-        type={"success"}
-        ref={successToastRef}></ToastMessage>
+      <ToastMessage type={"success"} ref={successToastRef}></ToastMessage>
     
-      <ToastMessage
-        type="danger"
-        ref={errorToastRef}/>
+      <ToastMessage type="danger" ref={errorToastRef}/>
 
       <CustomAlert
         modalVisible={modalVisible}

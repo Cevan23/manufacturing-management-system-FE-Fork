@@ -1,24 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-	View,
-	Text,
-	TextInput,
-	StyleSheet,
-	FlatList,
-	Alert,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet, FlatList, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import IconButton from "../../components/IconButton";
-import { useGlobalContext } from "../../context/GlobalProvider";
-import { getBOMDetail, updateBOM, deleteBOM } from "../../services/BOMServices";
 import { Picker } from "@react-native-picker/picker";
 import { Card, Title, DataTable } from "react-native-paper";
-import FormField from "../../components/FormField";
-import CustomButton from "../../components/CustomButton";
-import AlertWithTwoOptions from "../../components/AlertWithTwoOptions";
-import AppLoader from "../AppLoader";
-import ToastMessage from "../../components/ToastMessage";
+import IconButton from "../../../components/IconButton";
+import { useGlobalContext } from "../../../context/GlobalProvider";
+import { getBOMDetail, updateBOM, deleteBOM } from "../../../services/BOMServices";
+import FormField from "../../../components/FormField";
+import AlertWithTwoOptions from "../../../components/AlertWithTwoOptions";
+import AppLoader from "../../../components/AppLoader";
+import ToastMessage from "../../../components/ToastMessage";
 
+// BOM Detail page
+// Author: Pham Van Cao
 function BOMDetail({ route }) {
 	const navigation = useNavigation();
 	const { token, userId } = useGlobalContext();
@@ -37,13 +31,18 @@ function BOMDetail({ route }) {
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
 
+	// Set the default unit to "g"
 	useEffect(() => {
 		setNewMaterialUnit("g");
 	}, []);
 
+	// Fetch BOM detail
+	// Author: Pham Van Cao
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				// Get BOM detail
+				// Author: Pham Van Cao
 				const data = await getBOMDetail(token, id);
 				setBomDetail(data.result);
 				setUnit(data.result.unit);
@@ -58,11 +57,15 @@ function BOMDetail({ route }) {
 		fetchData();
 	}, [token]);
 
+	// Handle input change
+	// Author: Pham Van Cao
 	const handleInputChange = (name, value) => {
 		setBomDetail((prevState) => ({ ...prevState, [name]: value }));
 		console.log("BOMUpdate: ", bomDetail);
 	};
 
+	// Handle add material
+	// Author: Pham Van Cao
 	const handleAddMaterial = () => {
 		if (!newMaterialName || !newMaterialPrice || !newMaterialQuantity) {
 			errorToastRef.current.show({
@@ -97,6 +100,8 @@ function BOMDetail({ route }) {
 		setNewMaterialQuantity("");
 	};
 
+	// Handle delete material
+	// Author: Pham Van Cao
 	const handleDeleteMaterial = (materialId) => {
 		Alert.alert(
 			"Delete Material",
@@ -129,6 +134,8 @@ function BOMDetail({ route }) {
 		);
 	};
 
+	// Create BOM detail request body
+	// Author: Pham Van Cao
 	const createRequestBody = (bomDetail) => {
 		const requestBody = {
 			productManagerId: userId,
@@ -153,10 +160,17 @@ function BOMDetail({ route }) {
 		return requestBody;
 	};
 
+	// Handle save
+	// Author: Pham Van Cao
 	const handleSave = async () => {
 		try {
+			// Create the request body
+			// Author: Pham Van Cao
 			const requestBody = createRequestBody(bomDetail);
 			console.log("Request body: ", requestBody);
+
+			// Update the BOM
+			// Author: Pham Van Cao
 			const updatedBOM = await updateBOM(token, id, requestBody);
 			console.log("Updated BOM: ", updatedBOM);
 			if (updatedBOM) {
@@ -192,9 +206,12 @@ function BOMDetail({ route }) {
 		setTempDeletedMaterials([]);
 	};
 
+	// Handle delete
+	// Author: Pham Van Cao
 	const handleDelete = async () => {
 		try {
 			setLoading(true);
+			// Delete the BOM
 			const deletedBOM = await deleteBOM(token, id);
 			if (successToastRef.current) {
 				successToastRef.current.show({
@@ -213,6 +230,8 @@ function BOMDetail({ route }) {
 		}
 	};
 
+	// Render the BOM detail
+	// Author: Pham Van Cao
 	if (!bomDetail) {
 		return <Text>Loading...</Text>;
 	}

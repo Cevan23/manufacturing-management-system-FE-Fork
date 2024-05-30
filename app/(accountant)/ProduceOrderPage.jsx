@@ -1,28 +1,17 @@
-import { Text, View, StyleSheet, Alert, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import React, { useState, useRef, useCallback } from "react";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Swipeable } from "react-native-gesture-handler";
-import {
-	getAllOrder,
-	addOrder,
-	deleteOrder,
-	updateOrder,
-} from "../../services/OrderService";
-import {
-	CustomButton,
-	AppLoader,
-	ToastMessage,
-	AlertWithTwoOptions,
-	OCModal,
-	OUModal,
-	LeftSwipe,
-} from "../../components";
+import { getAllOrder, addOrder, deleteOrder, updateOrder } from "../../services/OrderService";
+import { CustomButton, AppLoader, ToastMessage, AlertWithTwoOptions, OCModal, OUModal, LeftSwipe } from "../../components";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Card } from "react-native-paper";
 import dateUtilsInstance from "../../utils/DateUtils";
 
+// Produce order page
+// Author: Nguyen Cao Nhan
 const ProduceOrder = () => {
 	const { token, userLogin } = useGlobalContext();
 	const [data, setData] = useState([]);
@@ -30,8 +19,7 @@ const ProduceOrder = () => {
 	const [error, setError] = useState(null);
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
-	const [confirmationModalVisible, setConfirmationModalVisible] =
-		useState(false);
+	const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
 	const [ocModalVisible, setocModalVisible] = useState(false);
 	const [ouModalVisible, setouModalVisible] = useState(false);
 	const [id, setId] = useState(false);
@@ -42,9 +30,13 @@ const ProduceOrder = () => {
 		orderStatus: "",
 	});
 
+	// Fetch produce order data
+	// Author: Nguyen Cao Nhan
 	const fetchData = useCallback(async () => {
 		setLoading(true);
 		try {
+			// Get all orders
+			// Author: Nguyen Cao Nhan
 			const res = await getAllOrder(token);
 			setData(res.result);
 		} catch (err) {
@@ -60,6 +52,8 @@ const ProduceOrder = () => {
 		}, [fetchData])
 	);
 
+	// Handle swipe item press
+	// Author: Nguyen Cao Nhan
 	const handleSwipeItemPress = (title, item) => {
 		if (title === "Delete") {
 			setConfirmationModalVisible(true);
@@ -69,6 +63,9 @@ const ProduceOrder = () => {
 			handleEditPress(item);
 		}
 	};
+
+	// Handle edit press
+	// Author: Nguyen Cao Nhan
 	const handleEditPress = (item) => {
 		if (item.dateEnd === null) {
 			setFormUpdate({
@@ -87,6 +84,8 @@ const ProduceOrder = () => {
 		setId(item.id);
 	};
 
+	// Handle navigate
+	// Author: Nguyen Cao Nhan
 	const handleNavigate = (item) => {
 		if (item.kindOrder === "PO")
 			navigation.navigate("OrderProductDetailPage", { order: item });
@@ -94,9 +93,13 @@ const ProduceOrder = () => {
 			navigation.navigate("OrderMaterialDetailPage", { order: item });
 	};
 
+	// Create order
+	// Author: Nguyen Cao Nhan
 	async function createOrder(name, contact, kindOrder, dateEnd) {
 		try {
 			setLoading(true);
+			// Add new order to database
+			// Author: Nguyen Cao Nhan
 			const add_res = await addOrder(
 				token,
 				parseInt(userLogin.id),
@@ -130,9 +133,13 @@ const ProduceOrder = () => {
 		}
 	}
 
+	// Delete order
+	// Author: Nguyen Cao Nhan
 	async function delOrder(id) {
 		try {
 			setLoading(true);
+			// Remove order out of database
+			// Author: Nguyen Cao Nhan
 			const del_res = await deleteOrder(token, id);
 			if (!del_res) {
 				if (errorToastRef.current) {
@@ -159,9 +166,13 @@ const ProduceOrder = () => {
 		}
 	}
 
+	// Update order
+	// Author: Nguyen Cao Nhan
 	async function upOrder(dateStart, dateEnd, orderStatus) {
 		try {
 			setLoading(true);
+			// Update order in database
+			// Author: Nguyen Cao Nhan
 			const up_res = await updateOrder(
 				token,
 				id,
@@ -343,6 +354,7 @@ const ProduceOrder = () => {
 	);
 };
 
+// Styles for produce order page
 const styles = StyleSheet.create({
 	backgroundColor: {
 		backgroundColor: "#161622",

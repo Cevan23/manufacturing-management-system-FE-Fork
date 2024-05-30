@@ -1,5 +1,7 @@
 import * as http from "../utils/httpRequest";
 
+// Author: Pham Van Cao
+// Retrieves all MPS records.
 export const getAllMPS = async (token) => {
     try {
         const config = {
@@ -12,6 +14,7 @@ export const getAllMPS = async (token) => {
     }
 };
 
+// Retrieves all MPS records associated with a particular project manager (PM)
 export const getAllMPSofPM = async (token, id) => {
     try {
         const config = {
@@ -24,6 +27,7 @@ export const getAllMPSofPM = async (token, id) => {
     }
 }
 
+// Retrieves a specific MPS record by its ID
 export const getMPSByID = async (token, mpsID) => {
     try {
         const config = {
@@ -36,6 +40,7 @@ export const getMPSByID = async (token, mpsID) => {
     }
 }
 
+// Creates a new MPS record
 export const createMPS = async (token, data) => {
     try {
         const config = {
@@ -48,6 +53,7 @@ export const createMPS = async (token, data) => {
     }
 };
 
+// Updates an existing MPS record
 export const updateMPS = async (token, data) => {
     try {
         const config = {
@@ -60,6 +66,7 @@ export const updateMPS = async (token, data) => {
     }
 }
 
+// Deletes an MPS record
 export const deleteMPS = async (token, mpsID) => {
     try {
         const config = {

@@ -1,19 +1,9 @@
 import React, { useContext, useState } from "react";
-import {
-	Text,
-	View,
-	Image,
-	TouchableOpacity,
-	TextInput,
-	StyleSheet,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { SimpleLineIcons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
-import {
-	DrawerItemList,
-	createDrawerNavigator,
-} from "@react-navigation/drawer";
+import { DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
 
 import ProfilePage from "./Profile/ProfilePage";
 import ChairmanHome from "./ChairmanHome";
@@ -23,15 +13,20 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { AuthContext } from "../../store/AuthContext";
 import "react-native-gesture-handler";
 
+// Drawer navigation for Chairman
+// Author: Pham Hien Nhan
 const Drawer = createDrawerNavigator();
 
+// Chairman layout
+// Author: Pham Hien Nhan
 const ChairmanLayout = () => {
-	const { setUser, setIsLogged, userLogin, searchText, setSearchText } =
-		useGlobalContext();
+	const { setUser, setIsLogged, userLogin, searchText, setSearchText } = useGlobalContext();
 	const authCtx = useContext(AuthContext);
 
 	const [searchMode, setSearchMode] = useState(false);
 
+	// Handle logout
+	// Author: Nguyen Cao Nhan
 	const handleLogout = () => {
 		// Clear user data and token
 		setUser(null);
@@ -39,11 +34,15 @@ const ChairmanLayout = () => {
 		authCtx.logout();
 	};
 
+	// Handle cancel search
+	// Author: Pham Hien Nhan
 	const handleCancelSearch = () => {
 		setSearchMode(false);
 		setSearchText("");
 	};
 
+	// Handle open search box
+	// Author: Pham Hien Nhan
 	const handleSearchIconClick = () => {
 		setSearchMode(!searchMode);
 		if (!searchMode) {
@@ -146,7 +145,7 @@ const ChairmanLayout = () => {
 				name="SaleForecast Report"
 				options={{
 					drawerLabel: "Sale Report",
-					title: "SaleForecast Report",
+					title: "Sale Forecast Report",
 					headerShadowVisible: false,
 					drawerIcon: () => (
 						<MaterialIcons name="edit-calendar" size={20} color={"#ff9c01"} />
@@ -171,6 +170,8 @@ const ChairmanLayout = () => {
 	);
 };
 
+// Handle styles for Chairman layout
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
 	searchContainer: {
 		flexDirection: "row",

@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Modal, Image, TouchableOpacity } from 'react-native';
-import { CustomButton } from "../../components";
 import { styles, images } from './styles';
 
+// Show alert boxes with one or two option(s)
+// Author: Pham Hien Nhan
 const CustomAlert = ({ 
   modalVisible, 
   setModalVisible, 

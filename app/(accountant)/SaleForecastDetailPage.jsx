@@ -1,12 +1,5 @@
-import {
-	Text,
-	View,
-	StyleSheet,
-	Alert,
-	TextInput,
-	ScrollView,
-} from "react-native";
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import { Text, View, StyleSheet, TextInput } from "react-native";
+import React, { useState, useRef, useCallback } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { Swipeable } from "react-native-gesture-handler";
@@ -17,18 +10,13 @@ import {
 	addSaleForecastDetail,
 	updateSaleForecastDetail,
 } from "../../services/SaleForecastDetailService";
-import {
-	CustomButton,
-	AppLoader,
-	ToastMessage,
-	AlertWithTwoOptions,
-	SFDModal,
-	LeftSwipe,
-} from "../../components";
+import { CustomButton, AppLoader, ToastMessage, AlertWithTwoOptions, SFDModal, LeftSwipe } from "../../components";
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Card } from "react-native-paper";
 
+// SaleForecastDetail page
+// Author: Nguyen Cao Nhan
 const SaleForecastDetail = ({ route }) => {
 	const { itemId } = route.params;
 	const { token, userLogin } = useGlobalContext();
@@ -36,8 +24,7 @@ const SaleForecastDetail = ({ route }) => {
 	const [loading, setLoading] = useState(true);
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
-	const [confirmationModalVisible, setConfirmationModalVisible] =
-		useState(false);
+	const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
 	const [sfdModalVisible, setsfdModalVisible] = useState(false);
 	const [id, setId] = useState(false);
 	const [dataProducts, setDataProducts] = useState([]);
@@ -48,10 +35,13 @@ const SaleForecastDetail = ({ route }) => {
 		totalSalePrice: 0,
 	});
 
+	// Fetch data for Sale Forecast Detail
 	const fetchData = useCallback(async () => {
 		setLoading(true);
 		try {
+			// Get Sale Forecast Details
 			const res = await getSaleForecastDetail(token, itemId);
+			// Get Products for Sale Forecast
 			const resp = await getProductsForSaleForecast(token, itemId);
 			setData(res.result);
 			setDataProducts(resp.result);
@@ -74,6 +64,7 @@ const SaleForecastDetail = ({ route }) => {
 		}, [fetchData])
 	);
 
+	// Handle update
 	const UpdatePress = (item) => {
 		setId(item.product_id);
 		setFormUpdate({
@@ -84,6 +75,7 @@ const SaleForecastDetail = ({ route }) => {
 		setsfdModalVisible(true);
 	};
 
+	// Handle swipe item press
 	const handleSwipeItemPress = (title, item) => {
 		if (title === "Delete") {
 			setConfirmationModalVisible(true);
@@ -93,12 +85,14 @@ const SaleForecastDetail = ({ route }) => {
 		}
 	};
 
+	// Handle edit press
 	const handleEditPress = (item) => {
 		setsfdModalVisible(true);
 		setId(item.product_id);
 		UpdatePress(item);
 	};
 
+	// Handle quantity change
 	const handleQuantityChange = (id, quantity) => {
 		setSelectedProducts((prevState) => {
 			console.log("***"); // Log trạng thái trước đó
@@ -118,6 +112,7 @@ const SaleForecastDetail = ({ route }) => {
 		});
 	};
 
+	// Handle product select
 	const handleProductSelect = (id) => {
 		setSelectedProducts((prevState) => {
 			console.log("###"); // Log trạng thái trước đó
@@ -135,6 +130,7 @@ const SaleForecastDetail = ({ route }) => {
 		});
 	};
 
+	// Create Sale Forecast Detail
 	async function createSaleForecastDetail() {
 		try {
 			setLoading(true);
@@ -151,6 +147,8 @@ const SaleForecastDetail = ({ route }) => {
 				pids.push(item.id);
 				quantities.push(item.quantity);
 			});
+
+			// Add Sale Forecast Detail into database
 			const add_res = await addSaleForecastDetail(
 				token,
 				itemId,
@@ -189,9 +187,11 @@ const SaleForecastDetail = ({ route }) => {
 		}
 	}
 
+	// Delete Sale Forecast Detail
 	async function delSaleForecastDetail(id) {
 		try {
 			setLoading(true);
+			// Delete Sale Forecast Detail in database
 			const del_res = await deleteSaleForecastDetail(token, id, itemId);
 			if (!del_res) {
 				throw new Error("Fail to delete!");
@@ -218,10 +218,11 @@ const SaleForecastDetail = ({ route }) => {
 		}
 	}
 
+	// Update Sale Forecast Detail
 	async function upSaleForecastDetail(quantity, totalPrice, totalSalePrice) {
 		try {
 			setLoading(true);
-
+			// Update Sale Forecast Detail in database
 			const up_res = await updateSaleForecastDetail(
 				token,
 				itemId,
@@ -256,6 +257,7 @@ const SaleForecastDetail = ({ route }) => {
 			setLoading(false);
 		}
 	}
+	
 	return (
 		<SafeAreaView style={styles.backgroundColor}>
 			<View style={{ paddingLeft: 10 }}>

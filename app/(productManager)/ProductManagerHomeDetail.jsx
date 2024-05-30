@@ -1,37 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	FlatList,
-	TouchableOpacity,
-	Alert,
-	TextInput,
-	Button,
-	Image,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from "react-native";
 import {
 	deleteWorkOrder,
 	getWorkOrderDetail,
 	updateWorkOrder,
 } from "../../services/WorkOrderServices";
-import {
-	updateWorkOrderDetail,
-	createWorkOrderDetail,
-} from "../../services/WorkOrderDetailServices";
+import { createWorkOrderDetail } from "../../services/WorkOrderDetailServices";
 import { getAllMPS } from "../../services/MPSServices";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { Card } from "react-native-paper";
 import IconButton from "../../components/IconButton";
-import DropDownPicker from "react-native-dropdown-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { icons } from "../../constants";
-import { AppLoader, ToastMessage, AlertWithTwoOptions } from "../../components";
-import { set } from "date-fns";
+import { AppLoader, ToastMessage, AlertWithTwoOptions, CustomButton } from "../../components";
 import { Picker } from "@react-native-picker/picker";
 
+// Product Manager Home Detail page
+// Author: Pham Van Cao
 const ProductManagerHomeDetail = ({ route }) => {
 	const { token, userId } = useGlobalContext();
 	const navigation = useNavigation();
@@ -53,26 +39,34 @@ const ProductManagerHomeDetail = ({ route }) => {
 	const [loading, setLoading] = useState(true);
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
-	const [confirmationModalVisible, setConfirmationModalVisible] =
-		useState(false);
+	const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
 	const initialLabel = items.find(
 		(item) => item.value === workOrder.workOrderStatus
 	)?.label;
 
 	const [selectedValue, setSelectedValue] = useState(initialLabel);
 
+	// Update work order status
+	// Author: Pham Van Cao
 	useEffect(() => {
 		setValue(workOrder.workOrderStatus);
 	}, [workOrder.workOrderStatus]);
 
+	// Refetch data when focus
+	// Author: Pham Van Cao
 	useFocusEffect(
 		React.useCallback(() => {
 			const fetchData = async () => {
 				setLoading(true);
+
+				// Get work order detail
+				// Author: Pham Van Cao
 				const response = await getWorkOrderDetail(token, id);
 				setWorkOrder(response.result.workOrder);
 				setWorkOrderDetails(response.result.workOrderDetails);
 
+				// Get all MPS
+				// Author: Pham Van Cao
 				const mpsResponse = await getAllMPS(token);
 				setMPS(mpsResponse.result);
 				setLoading(false);
@@ -81,15 +75,19 @@ const ProductManagerHomeDetail = ({ route }) => {
 		}, [token, userId])
 	);
 
+	// Handle save work order
+	// Author: Pham Van Cao
 	const handleSave = async () => {
 		try {
 			setLoading(true);
-			console.log("workOrder: ", workOrder);
-			console.log("workOrderDetails: ", workOrderDetails);
+			// Update work order
+			// Author: Pham Van Cao
 			const response = await updateWorkOrder(token, workOrder);
+
+			// Create work order detail
+			// Author: Pham Van Cao
 			const responseDT = await createWorkOrderDetail(token, workOrderDetails);
-			console.log("response: ", response);
-			console.log("responseDT: ", responseDT);
+			
 			if (successToastRef.current) {
 				successToastRef.current.show({
 					type: "success",
@@ -97,6 +95,9 @@ const ProductManagerHomeDetail = ({ route }) => {
 					description: "Work Order updated successfully!",
 				});
 			}
+			setTimeout(() => {
+				navigation.navigate("ProductManager");
+			}, 3500);
 		} catch (error) {
 			console.error(error);
 			if (errorToastRef.current) {
@@ -111,9 +112,13 @@ const ProductManagerHomeDetail = ({ route }) => {
 		}
 	};
 
+	// Handle delete work order
+	// Author: Pham Van Cao
 	const handleDelete = async () => {
 		try {
 			setLoading(true);
+			// Delete work order in database
+			// Author: Pham Van Cao
 			const response = await deleteWorkOrder(token, id);
 			console.log("response: ", response);
 			if (successToastRef.current) {
@@ -123,9 +128,9 @@ const ProductManagerHomeDetail = ({ route }) => {
 					description: "Work Order deleted successfully!",
 				});
 			}
-			const timer = setTimeout(() => {
+			setTimeout(() => {
 				navigation.navigate("ProductManager");
-			}, 4000);
+			}, 3500);
 		} catch (error) {
 			console.error(error);
 			if (errorToastRef.current) {
@@ -407,30 +412,29 @@ const ProductManagerHomeDetail = ({ route }) => {
 							</Card>
 						))}
 					</View>
-
-					<View>
-						<IconButton
-							title="Add Detail"
-							onPress={() =>
-								setWorkOrderDetails((prevState) => [
-									...prevState,
-									{
-										workOrderId: id,
-										masterProductionScheduleId: "",
-										note: "",
-										projectedProduction: "",
-										actualProduction: 0,
-										faultyProducts: 0,
-										actualProductionPrice: 0,
-										faultyProductPrice: 0,
-									},
-								])
-							}
-							iconName="plus-circle"
-						/>
-					</View>
 				</ScrollView>
 			</View>
+
+			<CustomButton
+				icon={"plus"}
+				iconSize={28}
+				containerStyles="p-0 absolute bottom-28 self-end right-10 h-12 w-12 rounded-full bg-green-500 items-center justify-center"
+				isLoading={false}
+				handlePress={() =>
+					setWorkOrderDetails((prevState) => [
+						...prevState,
+						{
+							workOrderId: id,
+							masterProductionScheduleId: "",
+							note: "",
+							projectedProduction: "",
+							actualProduction: 0,
+							faultyProducts: 0,
+							actualProductionPrice: 0,
+							faultyProductPrice: 0,
+						},
+					])}
+			/>
 
 			<View style={styles.buttonContainer}>
 				<IconButton

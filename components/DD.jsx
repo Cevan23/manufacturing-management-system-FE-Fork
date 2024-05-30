@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
+// Drop down field component
+// Author: Nguyen Cao Nhan
 const DD = ({ title, value, setValue, items, placeholder, edit }) => {
 	const [open, setOpen] = useState(false);
 	const [disable, setDisable] = useState(true);

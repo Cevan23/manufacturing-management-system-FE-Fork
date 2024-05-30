@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SaleForecast from "./SaleForecastPage";
@@ -9,43 +9,31 @@ import SaleForecastDetail from "./SaleForecastDetailPage";
 import OrderProductDetail from "./OrderProductDetailPage";
 import OrderMaterialDetail from "./OrderMaterialDetailPage";
 
+// Stack navigation for Accountant
+// Author: Nguyen Cao Nhan
 const Stack = createNativeStackNavigator();
 
+// SaleForecast stack page directions
+// Author: Nguyen Cao Nhan
 const SaleForecastStack = () => (
 	<Stack.Navigator>
-		<Stack.Screen
-			name="SaleForecastPage"
-			component={SaleForecast}
-			options={{ headerShown: false }}
-		/>
-		<Stack.Screen
-			name="SaleForecastDetailPage"
-			component={SaleForecastDetail}
-			options={{ headerShown: false }}
-		/>
+		<Stack.Screen name="SaleForecastPage" component={SaleForecast} options={{ headerShown: false }} />
+		<Stack.Screen name="SaleForecastDetailPage" component={SaleForecastDetail} options={{ headerShown: false }} />
 	</Stack.Navigator>
 );
 
+// Order stack page directions
+// Author: Nguyen Cao Nhan
 const OrderStack = () => (
 	<Stack.Navigator>
-		<Stack.Screen
-			name="OrderPage"
-			component={ProduceOrder}
-			options={{ headerShown: false }}
-		/>
-		<Stack.Screen
-			name="OrderProductDetailPage"
-			component={OrderProductDetail}
-			options={{ headerShown: false }}
-		/>
-		<Stack.Screen
-			name="OrderMaterialDetailPage"
-			component={OrderMaterialDetail}
-			options={{ headerShown: false }}
-		/>
+		<Stack.Screen name="OrderPage" component={ProduceOrder} options={{ headerShown: false }} />
+		<Stack.Screen name="OrderProductDetailPage" component={OrderProductDetail} options={{ headerShown: false }} />
+		<Stack.Screen name="OrderMaterialDetailPage" component={OrderMaterialDetail} options={{ headerShown: false }} />
 	</Stack.Navigator>
 );
 
+// Accountant home page
+// Author: Nguyen Cao Nhan
 const AccountantHome = () => {
 	const Tab = createBottomTabNavigator();
 	const tabs = [
@@ -87,6 +75,8 @@ const AccountantHome = () => {
 	);
 };
 
+// Styles for chairman home page
+// Author: Nguyen Cao Nhan
 const styles = StyleSheet.create({
 	tabBar: {
 		height: 70,

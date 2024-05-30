@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-	View,
-	Text,
-	Modal,
-	TouchableOpacity,
-	TextInput,
-	Platform,
-	StyleSheet,
-} from "react-native";
+import { View, Text, Modal, TouchableOpacity, TextInput, Platform, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
+// Sale forecast modal component
+// Author: Nguyen Cao Nhan
 const SFModal = ({
 	initialStartDate,
 	initialEndDate,
@@ -29,6 +23,7 @@ const SFModal = ({
 		setEndDate(new Date(initialEndDate));
 	}, [initialStartDate, initialEndDate]);
 
+	// Handle start date selection
 	const handleStartDateSelect = (event, selectedDate) => {
 		const currentDate = selectedDate || startDate;
 		setShowStartDatePicker(Platform.OS === "ios");
@@ -36,6 +31,7 @@ const SFModal = ({
 		onSelectStartDate(currentDate);
 	};
 
+	// Handle end date selection
 	const handleEndDateSelect = (event, selectedDate) => {
 		const currentDate = selectedDate || endDate;
 		setShowEndDatePicker(Platform.OS === "ios");
@@ -43,6 +39,7 @@ const SFModal = ({
 		onSelectEndDate(currentDate);
 	};
 
+	// Handle save button press
 	const handleSave = () => {
 		onSavePress(startDate, endDate);
 	};
@@ -112,6 +109,7 @@ const SFModal = ({
 	);
 };
 
+// Styles of sale forecast modal component
 const styles = StyleSheet.create({
 	modalContainer: {
 		flex: 1,

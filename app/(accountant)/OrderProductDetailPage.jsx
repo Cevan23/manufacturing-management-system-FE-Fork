@@ -1,12 +1,5 @@
-import {
-	Text,
-	View,
-	StyleSheet,
-	Alert,
-	TextInput,
-	ScrollView,
-} from "react-native";
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import { Text, View, StyleSheet, TextInput } from "react-native";
+import React, { useState, useRef, useCallback } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { Swipeable } from "react-native-gesture-handler";
@@ -17,18 +10,13 @@ import {
 	addOrderProductDetail,
 	updateOrderProductDetail,
 } from "../../services/OrderProductService";
-import {
-	CustomButton,
-	AppLoader,
-	ToastMessage,
-	AlertWithTwoOptions,
-	LeftSwipe,
-	ODModal,
-} from "../../components";
+import { CustomButton, AppLoader, ToastMessage, AlertWithTwoOptions, LeftSwipe, ODModal } from "../../components";
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Card } from "react-native-paper";
 
+// OrderProductDetail component
+// Author: Nguyen Cao Nhan
 const OrderProductDetail = ({ route }) => {
 	const { order } = route.params;
 	const { token, userLogin } = useGlobalContext();
@@ -36,8 +24,7 @@ const OrderProductDetail = ({ route }) => {
 	const [loading, setLoading] = useState(true);
 	const successToastRef = useRef(null);
 	const errorToastRef = useRef(null);
-	const [confirmationModalVisible, setConfirmationModalVisible] =
-		useState(false);
+	const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
 	const [odModalVisible, setodModalVisible] = useState(false);
 	const [id, setId] = useState(false);
 	const [dataProducts, setDataProducts] = useState([]);
@@ -46,10 +33,13 @@ const OrderProductDetail = ({ route }) => {
 		quantity: 0,
 	});
 
+	// Fetch data for order product detail
 	const fetchData = useCallback(async () => {
 		setLoading(true);
 		try {
+			// Get order product detail
 			const res = await getOrderProductDetail(token, order.id);
+			// Get products for order product
 			const resp = await getProductsForOrderProduct(token, order.id);
 			setData(res.result);
 			setDataProducts(resp.result);
@@ -72,16 +62,7 @@ const OrderProductDetail = ({ route }) => {
 		}, [fetchData])
 	);
 
-	const UpdatePress = (item) => {
-		setId(item.product_id);
-		setFormUpdate({
-			quantity: item.quantity,
-			totalPrice: item.totalPrice,
-			totalSalePrice: item.totalSalePrice,
-		});
-		setodModalVisible(true);
-	};
-
+	// Handle swipe item press
 	const handleSwipeItemPress = (title, item) => {
 		if (title === "Delete") {
 			setConfirmationModalVisible(true);
@@ -91,6 +72,7 @@ const OrderProductDetail = ({ route }) => {
 		}
 	};
 
+	// Handle edit press
 	const handleEditPress = (item) => {
 		setFormUpdate({
 			quantity: item.quantity,
@@ -99,6 +81,7 @@ const OrderProductDetail = ({ route }) => {
 		setId(item.product_id);
 	};
 
+	// Handle quantity change
 	const handleQuantityChange = (id, quantity) => {
 		setSelectedProducts((prevState) => {
 			console.log("***"); // Log trạng thái trước đó
@@ -118,6 +101,7 @@ const OrderProductDetail = ({ route }) => {
 		});
 	};
 
+	// Handle product select
 	const handleProductSelect = (id) => {
 		setSelectedProducts((prevState) => {
 			console.log("###"); // Log trạng thái trước đó
@@ -135,6 +119,7 @@ const OrderProductDetail = ({ route }) => {
 		});
 	};
 
+	// Create order product detail
 	async function createOrderProductDetail() {
 		try {
 			setLoading(true);
@@ -151,6 +136,8 @@ const OrderProductDetail = ({ route }) => {
 				pids.push(item.id);
 				quantities.push(item.quantity);
 			});
+
+			// Add order product detail
 			const add_res = await addOrderProductDetail(
 				token,
 				order.id,
@@ -189,9 +176,11 @@ const OrderProductDetail = ({ route }) => {
 		}
 	}
 
+	// Delete order product detail
 	async function delOrderProductDetail(id) {
 		try {
 			setLoading(true);
+			// Delete other product detail
 			const del_res = await deleteOtherProductDetail(token, order.id, id);
 			if (!del_res) {
 				throw new Error("Fail to delete!");
@@ -218,10 +207,11 @@ const OrderProductDetail = ({ route }) => {
 		}
 	}
 
+	// Update order product detail
 	async function upOrderProductDetail(quantity) {
 		try {
 			setLoading(true);
-
+			// Update order product detail
 			const up_res = await updateOrderProductDetail(
 				token,
 				order.id,

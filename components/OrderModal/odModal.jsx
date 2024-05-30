@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-	View,
-	Text,
-	Modal,
-	TouchableOpacity,
-	TextInput,
-	StyleSheet,
-} from "react-native";
+import { View, Text, Modal, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 
+// Order detail modal component
+// Author: Nguyen Cao Nhan
 const ODModal = ({ initialQuantity, visible, onSavePress, onClose }) => {
 	const [quantity, setQuantity] = useState("");
 
@@ -17,6 +12,7 @@ const ODModal = ({ initialQuantity, visible, onSavePress, onClose }) => {
 		}
 	}, [visible, initialQuantity]);
 
+	// Handle save button press
 	const handleSave = () => {
 		onSavePress(parseInt(quantity));
 	};
@@ -57,6 +53,7 @@ const ODModal = ({ initialQuantity, visible, onSavePress, onClose }) => {
 	);
 };
 
+// Styles of order detail modal component
 const styles = StyleSheet.create({
 	modalContainer: {
 		flex: 1,

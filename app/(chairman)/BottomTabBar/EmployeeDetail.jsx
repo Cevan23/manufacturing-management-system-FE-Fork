@@ -7,6 +7,8 @@ import DropDownField from '../../../components/DropDownField';
 import { useNavigation } from '@react-navigation/native';
 import { updateUserByChairman } from "../../../services/UserServices";
 
+// EmployeeDetail page
+// Author: Pham Hien Nhan
 const EmployeeDetail = ({ route }) => {
   const { data } = route.params;
   const navigation = useNavigation();
@@ -25,6 +27,7 @@ const EmployeeDetail = ({ route }) => {
   const [address, setAddress] = useState(data.address);
 
   // Remove time -> 'YYYY-MM-DD'
+  // Author: Pham Hien Nhan
   const dateOfBirthFormatted = new Date(dateOfBirth).toLocaleDateString('en-CA');
 
   const dropdownItems = [
@@ -33,11 +36,15 @@ const EmployeeDetail = ({ route }) => {
     { label: 'Product Manager', value: 'PRODUCT_MANAGER' },
   ];
 
+  // Allow user to edit the information
+  // Author: Pham Hien Nhan
   function handleEdit() {
     setEdit(!edit);
     setDisableEditing(!disableEdit); 
   }
 
+  // Update user information
+  // Author: Pham Hien Nhan
   async function handleUpdateInfo() {
     setSubmitting(true);
     const updatedUser = await updateUserByChairman(
@@ -156,6 +163,8 @@ const EmployeeDetail = ({ route }) => {
   );
 };
 
+// Styles of EmployeeDetail page
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
   container: {
     flex: 1,

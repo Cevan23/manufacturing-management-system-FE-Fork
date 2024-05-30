@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DD from "../DD";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {
-	View,
-	Text,
-	Modal,
-	TouchableOpacity,
-	TextInput,
-	StyleSheet,
-	Platform,
-} from "react-native";
+import { View, Text, Modal, TouchableOpacity, TextInput, StyleSheet, Platform } from "react-native";
 
 const dropdownItems = [
 	{ label: "PENDING", value: "PENDING" },
@@ -17,6 +9,8 @@ const dropdownItems = [
 	{ label: "DONE", value: "DONE" },
 ];
 
+// Order update modal component
+// Author: Nguyen Cao Nhan
 const OUModal = ({
 	initialDateStart,
 	initialDateEnd,
@@ -39,17 +33,21 @@ const OUModal = ({
 		}
 	}, [visible, initialDateStart, initialDateEnd, initialOrderStatus]);
 
+	// Handle end date selection
 	const handleEndDateSelect = (event, selectedDate) => {
 		const currentDate = selectedDate || dateEnd;
 		setShowEndDatePicker(Platform.OS === "ios");
 		setDateEnd(currentDate);
 	};
+
+	// Handle start date selection
 	const handleStartDateSelect = (event, selectedDate) => {
 		const currentDate = selectedDate || dateEnd;
 		setShowStartDatePicker(Platform.OS === "ios");
 		setDateStart(currentDate);
 	};
 
+	// Handle save button press
 	const handleSave = () => {
 		onSavePress(dateStart.toISOString(), dateEnd.toISOString(), orderStatus);
 	};
@@ -126,6 +124,7 @@ const OUModal = ({
 	);
 };
 
+// Styles of order update modal component
 const styles = StyleSheet.create({
 	modalContainer: {
 		flex: 1,

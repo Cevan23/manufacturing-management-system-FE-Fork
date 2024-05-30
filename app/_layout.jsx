@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import "react-native-url-polyfill/auto";
 import { SplashScreen, Stack } from "expo-router";
-
 import GlobalProvider from "../context/GlobalProvider";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// Prevent the splash screen from auto-hiding before asset loading is complete
+// Author: Nguyen Cao Nhan
 SplashScreen.preventAutoHideAsync();
 
+// Root layout
+// Author: Nguyen Cao Nhan
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
@@ -21,6 +23,8 @@ const RootLayout = () => {
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
   });
 
+  // Ensure fonts are loaded before hiding the splash screen
+  // Author: Nguyen Cao Nhan
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();

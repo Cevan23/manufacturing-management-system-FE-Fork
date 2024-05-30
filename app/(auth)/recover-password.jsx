@@ -7,6 +7,8 @@ import { CustomButton, FormField, ToastMessage } from "../../components";
 import { recoverPasswordByEmail } from "../../services/LoginServices";
 import CustomAlert from "../../components/CustomAlert";
 
+// Recover password screen
+// Author: Pham Hien Nhan
 const RecoverPassword = () => {
   const [recoverResponse, setRecoverResponse] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,6 +21,8 @@ const RecoverPassword = () => {
   const successToastRef = useRef(null);
   const errorToastRef = useRef(null);
 
+  // Handle recover password via email
+  // Author: Pham Hien Nhan
   async function handleRecoverPassword() {
     if (email === "") {
       setModalVisible(true);
@@ -30,6 +34,8 @@ const RecoverPassword = () => {
     setSubmitting(true);
 
     try {
+      // Check email is exist or not in database
+      // Author: Pham Hien Nhan
       const recoverResponse = await recoverPasswordByEmail(email);
       if (!recoverResponse) {
         setModalVisible(true);
@@ -67,12 +73,14 @@ const RecoverPassword = () => {
   };
 
   // Function to try again
+  // Author: Pham Hien Nhan
   const handleTryAgain = () => {
     handleRecoverPassword();
     setModalVisible(false); 
   };
 
   // Function to clear email and password fields
+  // Author: Pham Hien Nhan
   const handClear = () => {
     setEmail("");
     setModalVisible(false); 
@@ -139,13 +147,9 @@ const RecoverPassword = () => {
         </View>
       </ScrollView>
 
-      <ToastMessage
-        type={"success"}
-        ref={successToastRef}></ToastMessage>
+      <ToastMessage type={"success"} ref={successToastRef}></ToastMessage>
     
-      <ToastMessage
-        type="danger"
-        ref={errorToastRef}/>
+      <ToastMessage type="danger" ref={errorToastRef}/>
 
       <CustomAlert
         modalVisible={modalVisible}

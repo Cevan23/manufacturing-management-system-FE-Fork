@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+// Style for Profile Screens
+// Author: Pham Hien Nhan
 const styles = StyleSheet.create({
   container: {
     flex: 1,
